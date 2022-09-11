@@ -1,5 +1,6 @@
 package com.guruprasad.notesuplaoder;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,15 +11,23 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-        EditText username , password ;
-        TextView forgot_password;
+        EditText Email , password ;
         Button login ;
+        FirebaseAuth firebaseAuth ;
+        ProgressBar progressBar ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,40 +36,66 @@ public class MainActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        username= findViewById(R.id.email_login);
+        Email= findViewById(R.id.email_login);
         password = findViewById(R.id.password);
-        forgot_password= findViewById(R.id.forgot);
+
         login = findViewById(R.id.login);
+    firebaseAuth = FirebaseAuth.getInstance();
+    progressBar = findViewById(R.id.admin_progressbar);
+
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user!=null)
+        {
+            Intent intent1 =new Intent(MainActivity.this,menu.class);
+            startActivity(intent1);
+            finish();
+
+        }
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String user = username.getText().toString();
-                int pass =Integer.parseInt(password.getText().toString()) ;
+                String email = Email.getText().toString();
+                String pass = password.getText().toString();
 
-                String name = "guruprasad" ;
-                int code = 1736;
-
-                if (TextUtils.isEmpty(user))
+                if (TextUtils.isEmpty(email))
                 {
-                    username.setError("Enter the username please...");
+                    Email.setError("Enter the username....");
                     return;
                 }
 
+                if (TextUtils.isEmpty(pass))
+                {
+                    password.setError("Enter the password...");
+                    return;
+                }
 
-                if (user.equals(name) && pass==code)
-                {
-                    Toast.makeText(MainActivity.this, "login successful", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getApplicationContext(),menu.class));
-                    finish();
-                }
-                else
-                {
-                    Toast.makeText(MainActivity.this, "Login failed ", Toast.LENGTH_SHORT).show();
-                }
+                progressBar.setVisibility(View.VISIBLE);
+
+
+
+                firebaseAuth.signInWithEmailAndPassword(email,pass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getApplicationContext(),menu.class));
+                        finish();
+                        progressBar.setVisibility(View.INVISIBLE);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(MainActivity.this, "Error : "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.INVISIBLE);
+                    }
+                });
+
+
 
             }
         });
+
 
 
 
