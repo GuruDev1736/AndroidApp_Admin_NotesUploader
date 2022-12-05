@@ -1,9 +1,5 @@
 package com.guruprasad.notesuplaoder;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,8 +8,10 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -21,19 +19,17 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.Objects;
-
 public class MainActivity extends AppCompatActivity {
         EditText Email , password ;
         Button login ;
         FirebaseAuth firebaseAuth ;
         ProgressBar progressBar ;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Objects.requireNonNull(getSupportActionBar()).hide();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         Email= findViewById(R.id.email_login);
@@ -47,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user!=null)
         {
-            Intent intent1 =new Intent(MainActivity.this,menu.class);
+            Intent intent1 =new Intent(MainActivity.this,navigation.class);
             startActivity(intent1);
             finish();
 
@@ -79,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(AuthResult authResult) {
                         Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(getApplicationContext(),menu.class));
+                        startActivity(new Intent(getApplicationContext(),navigation.class));
                         finish();
                         progressBar.setVisibility(View.INVISIBLE);
                     }

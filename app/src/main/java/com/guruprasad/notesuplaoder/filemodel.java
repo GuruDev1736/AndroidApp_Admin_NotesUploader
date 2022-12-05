@@ -3,7 +3,11 @@ package com.guruprasad.notesuplaoder;
 public class filemodel {
     String filetitle , fileurl ;
 
+
     public filemodel() {
+    }
+
+    public filemodel(String s, String toString, String string) {
     }
 
     public filemodel(String filetitle, String fileurl) {

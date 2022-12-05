@@ -1,22 +1,22 @@
 package com.guruprasad.notesuplaoder;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class menu extends AppCompatActivity {
-        RecyclerView recview ;
+    RecyclerView recview ;
     myadapter adapter ;
-    FloatingActionButton notes , music ;
+    FloatingActionButton notes  ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +26,6 @@ public class menu extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         notes = findViewById(R.id.notes);
-        music = findViewById(R.id.music);
 
         recview = findViewById(R.id.recview);
 
@@ -46,13 +45,6 @@ public class menu extends AppCompatActivity {
             }
         });
 
-        music.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),Music.class));
-                finish();
-            }
-        });
 
     }
 }

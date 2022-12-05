@@ -4,13 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="5dp"
+    app:cardCornerRadius="25dp"
     android:padding="15dp"
     android:elevation="4dp"
+    android:id="@+id/cardview"
     app:cardUseCompatPadding="true"
     tools:ignore="UnusedAttribute">
 
     <RelativeLayout
+        android:id="@+id/relative"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/singlrowdesign"

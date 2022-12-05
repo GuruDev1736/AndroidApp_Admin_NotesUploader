@@ -5,10 +5,12 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -33,6 +35,9 @@ public class myadapter extends FirebaseRecyclerAdapter<filemodel,myadapter.myvie
 
                     }
                 });
+
+         holder.card.startAnimation(AnimationUtils.loadAnimation(holder.itemView.getContext(),R.anim.recycler_view_anime_2));
+
     }
 
     @NonNull
@@ -46,13 +51,14 @@ public class myadapter extends FirebaseRecyclerAdapter<filemodel,myadapter.myvie
     {
             TextView header ;
             ImageView imageView ;
+              CardView card ;
 
         public myviewholder(@NonNull View itemView) {
             super(itemView);
 
             header = itemView.findViewById(R.id.header);
             imageView = itemView. findViewById(R.id.img1);
-
+            card = itemView.findViewById(R.id.cardview);
 
         }
     }

@@ -20,19 +20,6 @@
         app:srcCompat="@drawable/ic_baseline_notes_24"
         tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/music"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="584dp"
-        android:clickable="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.954"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_music_note_24"
-        tools:ignore="SpeakableTextPresentCheck" />
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recview"

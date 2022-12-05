@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="5dp"
+    android:padding="10dp"
+    android:elevation="4dp"
+    app:cardUseCompatPadding="true"
+    tools:ignore="UnusedAttribute">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/singlrowdesign"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/fileicon"
+            android:layout_width="38dp"
+            android:layout_height="37dp"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/pdf" />
+
+        <TextView
+            android:id="@+id/filename"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/fileicon"
+            android:layout_alignBottom="@+id/fileicon"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_toEndOf="@+id/fileicon"
+            android:text="FileName"
+            android:textColor="	#000"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/pbar"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:layout_marginEnd="15dp"
+            android:src="@drawable/progress" />
+
+    </RelativeLayout>
+
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

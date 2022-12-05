@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".navigation">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#9C27B0"
+        android:theme="@style/Theme.NotesUplaoder.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:popupTheme="@style/Theme.NotesUplaoder.PopupOverlay" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <include layout="@layout/content_navigation" />
+
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fab_expandDirection="up"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_marginTop="350dp"
+        android:layout_marginStart="320dp"
+        app:fab_labelsPosition="left">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_solved_lab_manual"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="#fff"
+            app:fab_size="normal"
+            android:clickable="true"
+            android:focusable="true"
+            app:fab_icon="@drawable/ic_baseline_bookmark_add_24"
+            app:fab_title="Add Solved Lab Manual"
+            />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_lab_manual"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="#fff"
+            app:fab_size="normal"
+            android:clickable="true"
+            android:focusable="true"
+            app:fab_icon="@drawable/ic_outline_menu_book_24"
+            app:fab_title="Add Lab Manual"
+            />
+
+  <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_notes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="#fff"
+            app:fab_size="normal"
+            android:clickable="true"
+            android:focusable="true"
+            app:fab_icon="@drawable/ic_baseline_notes_24"
+            app:fab_title="Add Lab Manual"
+            />
+
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
