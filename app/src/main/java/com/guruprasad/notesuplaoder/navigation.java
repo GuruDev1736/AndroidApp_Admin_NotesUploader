@@ -91,6 +91,16 @@ public class navigation extends AppCompatActivity {
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(),labmanuals.class));
                 finish();
+                Toast.makeText(navigation.this, "Upload Lab manuals", Toast.LENGTH_SHORT).show();
+            }
+        });
+        
+        solved_labmanual.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(),solved_lab_manual.class));
+                finish();
+                Toast.makeText(navigation.this, "Upload Solved Lab manual", Toast.LENGTH_SHORT).show();
             }
         });
             

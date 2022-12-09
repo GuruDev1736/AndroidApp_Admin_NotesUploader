@@ -26,7 +26,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.guruprasad.notesuplaoder.databinding.ActivityLabmanualsBinding;
+import com.guruprasad.notesuplaoder.databinding.ActivitySolvedLabManualBinding;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -34,9 +34,9 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
-public class labmanuals extends AppCompatActivity {
+public class solved_lab_manual extends AppCompatActivity {
     Uri file_path;
-    ActivityLabmanualsBinding binding ;
+    ActivitySolvedLabManualBinding binding ;
     FirebaseDatabase database ;
     FirebaseStorage storage ;
     StorageReference storageReference ;
@@ -54,14 +54,14 @@ public class labmanuals extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
 
-        binding = ActivityLabmanualsBinding.inflate(getLayoutInflater());
+        binding = ActivitySolvedLabManualBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         database = FirebaseDatabase.getInstance();
         storage = FirebaseStorage.getInstance();
         auth = FirebaseAuth.getInstance();
         storageReference =FirebaseStorage.getInstance().getReference();
-        databaseReference = FirebaseDatabase.getInstance().getReference("admin_lab_manual");
+        databaseReference = FirebaseDatabase.getInstance().getReference("admin_solved_lab_manual");
 
         TextView pagename = findViewById(R.id.page_name);
         pagename.setText("Upload Lab manual");
@@ -84,55 +84,55 @@ public class labmanuals extends AppCompatActivity {
             }
         });
 
-       binding.browse.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
+        binding.browse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-               Dexter.withContext(view.getContext()).withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                       .withListener(new PermissionListener() {
-                           @Override
-                           public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-                               Intent intent = new Intent();
-                               intent.setType("application/pdf");
-                               intent.setAction(Intent.ACTION_GET_CONTENT);
-                               startActivityForResult(Intent.createChooser(intent,"Select PDF File"),101);
-                           }
+                Dexter.withContext(view.getContext()).withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                        .withListener(new PermissionListener() {
+                            @Override
+                            public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
+                                Intent intent = new Intent();
+                                intent.setType("application/pdf");
+                                intent.setAction(Intent.ACTION_GET_CONTENT);
+                                startActivityForResult(Intent.createChooser(intent,"Select PDF File"),101);
+                            }
 
-                           @Override
-                           public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
-                               Toast.makeText(labmanuals.this, "Please give the permission to browse the files", Toast.LENGTH_SHORT).show();
-                           }
+                            @Override
+                            public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
+                                Toast.makeText(solved_lab_manual.this, "Please give the permission to browse the files", Toast.LENGTH_SHORT).show();
+                            }
 
-                           @Override
-                           public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
+                            @Override
+                            public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
                                 permissionToken.continuePermissionRequest();
-                           }
-                       }).check();
+                            }
+                        }).check();
 
-           }
-       });
+            }
+        });
 
-       binding.upload.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
+        binding.upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-               String name_of_manual = String.valueOf(binding.title.getText());
+                String name_of_manual = String.valueOf(binding.title.getText());
 
-               if (TextUtils.isEmpty(name_of_manual))
-               {
+                if (TextUtils.isEmpty(name_of_manual))
+                {
                     binding.title.setError("Enter the name of the lab manual");
-                    Toast.makeText(labmanuals.this, "Enter the name of the lab manual", Toast.LENGTH_SHORT).show();
-                   return;
-               }
-               else
-               {
-                   ProgressDialog pd = new ProgressDialog(view.getContext());
-                    pd.setTitle("Lab Manual is Uploading");
+                    Toast.makeText(solved_lab_manual.this, "Enter the name of the lab manual", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else
+                {
+                    ProgressDialog pd = new ProgressDialog(view.getContext());
+                    pd.setTitle("Solved Lab Manual is Uploading");
                     pd.setMessage("PLease Wait ....");
                     pd.setCancelable(false);
                     pd.setCanceledOnTouchOutside(false);
                     pd.show();
-                    StorageReference reference = storageReference.child("admin_lab_manual/"+System.currentTimeMillis()+".pdf");
+                    StorageReference reference = storageReference.child("admin_solved_lab_manual/"+System.currentTimeMillis()+".pdf");
                     reference.putFile(file_path).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -148,8 +148,7 @@ public class labmanuals extends AppCompatActivity {
                                         binding.cancel.setVisibility(View.INVISIBLE);
                                         binding.title.setText("");
                                         pd.dismiss();
-                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
-
+                                        Toast.makeText(solved_lab_manual.this, "Solved manual is uploaded", Toast.LENGTH_SHORT).show();
                                         return;
 
                                     }
@@ -160,7 +159,7 @@ public class labmanuals extends AppCompatActivity {
                                         binding.cancel.setVisibility(View.INVISIBLE);
                                         binding.title.setText("");
                                         pd.dismiss();
-                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(solved_lab_manual.this, "Solved manual is uploaded", Toast.LENGTH_SHORT).show();
 
                                         return;
                                     }
@@ -172,7 +171,7 @@ public class labmanuals extends AppCompatActivity {
                                         binding.cancel.setVisibility(View.INVISIBLE);
                                         binding.title.setText("");
                                         pd.dismiss();
-                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(solved_lab_manual.this, "Solved manual is uploaded", Toast.LENGTH_SHORT).show();
 
                                         return;
                                     }
@@ -184,7 +183,7 @@ public class labmanuals extends AppCompatActivity {
                                         binding.cancel.setVisibility(View.INVISIBLE);
                                         binding.title.setText("");
                                         pd.dismiss();
-                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(solved_lab_manual.this, "Solved manual is uploaded", Toast.LENGTH_SHORT).show();
 
                                         return;
                                     }
@@ -196,7 +195,7 @@ public class labmanuals extends AppCompatActivity {
                                         binding.cancel.setVisibility(View.INVISIBLE);
                                         binding.title.setText("");
                                         pd.dismiss();
-                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(solved_lab_manual.this, "Solved manual is uploaded", Toast.LENGTH_SHORT).show();
 
                                         return;
                                     }
@@ -207,7 +206,7 @@ public class labmanuals extends AppCompatActivity {
                                         binding.cancel.setVisibility(View.INVISIBLE);
                                         binding.title.setText("");
                                         pd.dismiss();
-                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(solved_lab_manual.this, "Solved manual is uploaded", Toast.LENGTH_SHORT).show();
 
 
                                     }
@@ -215,7 +214,7 @@ public class labmanuals extends AppCompatActivity {
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(labmanuals.this, "Error : "+ e, Toast.LENGTH_LONG).show();
+                                    Toast.makeText(solved_lab_manual.this, "Error : "+ e, Toast.LENGTH_LONG).show();
                                     pd.dismiss();
                                 }
                             });
@@ -229,11 +228,11 @@ public class labmanuals extends AppCompatActivity {
                     });
 
 
-               }
+                }
 
 
-           }
-       });
+            }
+        });
 
 
 

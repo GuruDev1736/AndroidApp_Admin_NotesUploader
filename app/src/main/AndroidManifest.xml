@@ -16,6 +16,13 @@
         android:theme="@style/Theme.NotesUplaoder"
         tools:targetApi="31">
         <activity
+            android:name=".solved_lab_manual"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".labmanuals"
             android:exported="false">
             <meta-data
@@ -33,7 +40,7 @@
         </activity>
         <activity
             android:name=".Notes"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".menu"
             android:exported="false" />
