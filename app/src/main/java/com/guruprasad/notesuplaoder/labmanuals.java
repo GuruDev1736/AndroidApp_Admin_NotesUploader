@@ -4,8 +4,10 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.OpenableColumns;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
@@ -45,6 +47,7 @@ public class labmanuals extends AppCompatActivity {
     RadioButton radioButton ;
 
     String[] sem_name = {"Select","Sem-1","Sem-2","Sem-3","Sem-4","Sem-5","Sem-6"};
+    String name = "";
 
 
 
@@ -67,49 +70,38 @@ public class labmanuals extends AppCompatActivity {
         pagename.setText("Upload Lab manual");
 
         ImageButton back = findViewById(R.id.back_button);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),navigation.class));
-                finish();
-            }
+        back.setOnClickListener(view -> {
+            startActivity(new Intent(getApplicationContext(),navigation.class));
+            finish();
         });
 
-        binding.cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                binding.cancel.setVisibility(View.INVISIBLE);
-                binding.img1.setVisibility(View.INVISIBLE);
-                binding.upload.setVisibility(View.INVISIBLE);
-            }
+        binding.cancel.setOnClickListener(view -> {
+            binding.cancel.setVisibility(View.INVISIBLE);
+            binding.img1.setVisibility(View.INVISIBLE);
+            binding.upload.setVisibility(View.INVISIBLE);
         });
 
-       binding.browse.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
+       binding.browse.setOnClickListener(view -> {
+           Dexter.withContext(view.getContext()).withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                   .withListener(new PermissionListener() {
+                       @Override
+                       public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
+                           Intent intent = new Intent();
+                           intent.setType("application/pdf");
+                           intent.setAction(Intent.ACTION_GET_CONTENT);
+                           startActivityForResult(Intent.createChooser(intent, "Select PDF File"), 101);
+                       }
 
-               Dexter.withContext(view.getContext()).withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                       .withListener(new PermissionListener() {
-                           @Override
-                           public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-                               Intent intent = new Intent();
-                               intent.setType("application/pdf");
-                               intent.setAction(Intent.ACTION_GET_CONTENT);
-                               startActivityForResult(Intent.createChooser(intent,"Select PDF File"),101);
-                           }
+                       @Override
+                       public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
+                           Toast.makeText(labmanuals.this, "Please give the permission to browse the files", Toast.LENGTH_SHORT).show();
+                       }
 
-                           @Override
-                           public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
-                               Toast.makeText(labmanuals.this, "Please give the permission to browse the files", Toast.LENGTH_SHORT).show();
-                           }
-
-                           @Override
-                           public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
-                                permissionToken.continuePermissionRequest();
-                           }
-                       }).check();
-
-           }
+                       @Override
+                       public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
+                           permissionToken.continuePermissionRequest();
+                       }
+                   }).check();
        });
 
        binding.upload.setOnClickListener(new View.OnClickListener() {
@@ -132,17 +124,18 @@ public class labmanuals extends AppCompatActivity {
                     pd.setCancelable(false);
                     pd.setCanceledOnTouchOutside(false);
                     pd.show();
-                    StorageReference reference = storageReference.child("admin_lab_manual/"+System.currentTimeMillis()+".pdf");
+                    StorageReference reference = storageReference.child("admin_lab_manual/"+name+".pdf");
                     reference.putFile(file_path).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
+
                                     file_model filemodel = new file_model(binding.title.getText().toString(), uri.toString(), auth.getCurrentUser().getUid());
 
-                                    if (binding.sem1.isChecked()) {
-                                        databaseReference.child("semester_1").child(databaseReference.push().getKey()).setValue(filemodel);
+                                    if (binding.computerRadio.isChecked()  && binding.firstYear.isChecked() ) {
+                                        databaseReference.child("computer").child("first_year").child(databaseReference.push().getKey()).setValue(filemodel);
                                         binding.img1.setVisibility(View.INVISIBLE);
                                         binding.upload.setVisibility(View.INVISIBLE);
                                         binding.cancel.setVisibility(View.INVISIBLE);
@@ -150,58 +143,10 @@ public class labmanuals extends AppCompatActivity {
                                         pd.dismiss();
                                         Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
 
-                                        return;
-
                                     }
-                                    if (binding.sem2.isChecked()) {
-                                        databaseReference.child("semester_2").child(databaseReference.push().getKey()).setValue(filemodel);
-                                        binding.img1.setVisibility(View.INVISIBLE);
-                                        binding.upload.setVisibility(View.INVISIBLE);
-                                        binding.cancel.setVisibility(View.INVISIBLE);
-                                        binding.title.setText("");
-                                        pd.dismiss();
-                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
-
-                                        return;
-                                    }
-
-                                    if (binding.sem3.isChecked()) {
-                                        databaseReference.child("semester_3").child(databaseReference.push().getKey()).setValue(filemodel);
-                                        binding.img1.setVisibility(View.INVISIBLE);
-                                        binding.upload.setVisibility(View.INVISIBLE);
-                                        binding.cancel.setVisibility(View.INVISIBLE);
-                                        binding.title.setText("");
-                                        pd.dismiss();
-                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
-
-                                        return;
-                                    }
-
-                                    if (binding.sem4.isChecked()) {
-                                        databaseReference.child("semester_4").child(databaseReference.push().getKey()).setValue(filemodel);
-                                        binding.img1.setVisibility(View.INVISIBLE);
-                                        binding.upload.setVisibility(View.INVISIBLE);
-                                        binding.cancel.setVisibility(View.INVISIBLE);
-                                        binding.title.setText("");
-                                        pd.dismiss();
-                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
-
-                                        return;
-                                    }
-
-                                    if (binding.sem5.isChecked()) {
-                                        databaseReference.child("semester_5").child(databaseReference.push().getKey()).setValue(filemodel);
-                                        binding.img1.setVisibility(View.INVISIBLE);
-                                        binding.upload.setVisibility(View.INVISIBLE);
-                                        binding.cancel.setVisibility(View.INVISIBLE);
-                                        binding.title.setText("");
-                                        pd.dismiss();
-                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
-
-                                        return;
-                                    }
-                                    if (binding.sem6.isChecked()) {
-                                        databaseReference.child("semester_6").child(databaseReference.push().getKey()).setValue(filemodel);
+                                    else if (binding.computerRadio.isChecked()  && binding.firstYear.isChecked() )
+                                    {
+                                        databaseReference.child("computer").child("first_year").child(databaseReference.push().getKey()).setValue(filemodel);
                                         binding.img1.setVisibility(View.INVISIBLE);
                                         binding.upload.setVisibility(View.INVISIBLE);
                                         binding.cancel.setVisibility(View.INVISIBLE);
@@ -211,6 +156,1073 @@ public class labmanuals extends AppCompatActivity {
 
 
                                     }
+                                    else if (binding.computerRadio.isChecked()  && binding.firstYear.isChecked())
+                                    {
+                                        databaseReference.child("computer").child("first_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.computerRadio.isChecked()  && binding.firstYear.isChecked() )
+                                    {
+                                        databaseReference.child("computer").child("first_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                    else if (binding.computerRadio.isChecked()  && binding.firstYear.isChecked() )
+                                    {
+                                        databaseReference.child("computer").child("first_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.computerRadio.isChecked()  && binding.firstYear.isChecked() )
+                                    {
+                                        databaseReference.child("computer").child("first_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.computerRadio.isChecked()  && binding.secondYear.isChecked() )
+                                    {
+                                        databaseReference.child("computer").child("second_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.computerRadio.isChecked()  && binding.secondYear.isChecked() )
+                                    {
+                                        databaseReference.child("computer").child("second_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.computerRadio.isChecked()  && binding.secondYear.isChecked())
+                                    {
+                                        databaseReference.child("computer").child("second_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.computerRadio.isChecked()  && binding.secondYear.isChecked() )
+                                    {
+                                        databaseReference.child("computer").child("second_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.computerRadio.isChecked()  && binding.secondYear.isChecked() )
+                                    {
+                                        databaseReference.child("computer").child("second_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.computerRadio.isChecked()  && binding.secondYear.isChecked() )
+                                    {
+                                        databaseReference.child("computer").child("second_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.computerRadio.isChecked()  && binding.thirdYear.isChecked() )
+                                    {
+                                        databaseReference.child("computer").child("third_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else  if (binding.computerRadio.isChecked()  && binding.thirdYear.isChecked() )
+                                    {
+                                        databaseReference.child("computer").child("third_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else  if (binding.computerRadio.isChecked()  && binding.thirdYear.isChecked())
+                                    {
+                                        databaseReference.child("computer").child("third_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else  if (binding.computerRadio.isChecked()  && binding.thirdYear.isChecked() )
+                                    {
+                                        databaseReference.child("computer").child("third_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else  if (binding.computerRadio.isChecked()  && binding.thirdYear.isChecked() )
+                                    {
+                                        databaseReference.child("computer").child("third_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else  if (binding.computerRadio.isChecked()  && binding.thirdYear.isChecked() )
+                                    {
+                                        databaseReference.child("computer").child("third_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+
+                                    // mechanical
+
+                                    else if (binding.mechanicalRadio.isChecked()  && binding.firstYear.isChecked() ) {
+                                        databaseReference.child("mechanical").child("first_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                    else if (binding.mechanicalRadio.isChecked()  && binding.firstYear.isChecked() )
+                                    {
+                                        databaseReference.child("mechanical").child("first_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.mechanicalRadio.isChecked()  && binding.firstYear.isChecked())
+                                    {
+                                        databaseReference.child("mechanical").child("first_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.mechanicalRadio.isChecked()  && binding.firstYear.isChecked() )
+                                    {
+                                        databaseReference.child("mechanical").child("first_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                    else if (binding.mechanicalRadio.isChecked()  && binding.firstYear.isChecked() )
+                                    {
+                                        databaseReference.child("mechanical").child("first_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.mechanicalRadio.isChecked()  && binding.firstYear.isChecked() )
+                                    {
+                                        databaseReference.child("mechanical").child("first_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.mechanicalRadio.isChecked()  && binding.secondYear.isChecked() )
+                                    {
+                                        databaseReference.child("mechanical").child("second_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.mechanicalRadio.isChecked()  && binding.secondYear.isChecked() )
+                                    {
+                                        databaseReference.child("mechanical").child("second_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.mechanicalRadio.isChecked()  && binding.secondYear.isChecked())
+                                    {
+                                        databaseReference.child("mechanical").child("second_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.mechanicalRadio.isChecked()  && binding.secondYear.isChecked() )
+                                    {
+                                        databaseReference.child("mechanical").child("second_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.mechanicalRadio.isChecked()  && binding.secondYear.isChecked() )
+                                    {
+                                        databaseReference.child("mechanical").child("second_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.mechanicalRadio.isChecked()  && binding.secondYear.isChecked() )
+                                    {
+                                        databaseReference.child("mechanical").child("second_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.mechanicalRadio.isChecked()  && binding.thirdYear.isChecked() )
+                                    {
+                                        databaseReference.child("mechanical").child("third_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else  if (binding.mechanicalRadio.isChecked()  && binding.thirdYear.isChecked() )
+                                    {
+                                        databaseReference.child("mechanical").child("third_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else  if (binding.mechanicalRadio.isChecked()  && binding.thirdYear.isChecked())
+                                    {
+                                        databaseReference.child("mechanical").child("third_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else  if (binding.mechanicalRadio.isChecked()  && binding.thirdYear.isChecked() )
+                                    {
+                                        databaseReference.child("mechanical").child("third_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else  if (binding.mechanicalRadio.isChecked()  && binding.thirdYear.isChecked() )
+                                    {
+                                        databaseReference.child("mechanical").child("third_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else  if (binding.mechanicalRadio.isChecked()  && binding.thirdYear.isChecked() )
+                                    {
+                                        databaseReference.child("mechanical").child("third_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+
+
+                                    //civil
+
+
+                                    else if (binding.civilRadio.isChecked()  && binding.firstYear.isChecked() ) {
+                                        databaseReference.child("civil").child("first_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                    else if (binding.civilRadio.isChecked()  && binding.firstYear.isChecked() )
+                                    {
+                                        databaseReference.child("civil").child("first_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.civilRadio.isChecked()  && binding.firstYear.isChecked())
+                                    {
+                                        databaseReference.child("civil").child("first_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.civilRadio.isChecked()  && binding.firstYear.isChecked() )
+                                    {
+                                        databaseReference.child("civil").child("first_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                    else if (binding.civilRadio.isChecked()  && binding.firstYear.isChecked() )
+                                    {
+                                        databaseReference.child("civil").child("first_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.civilRadio.isChecked()  && binding.firstYear.isChecked() )
+                                    {
+                                        databaseReference.child("civil").child("first_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.civilRadio.isChecked()  && binding.secondYear.isChecked() )
+                                    {
+                                        databaseReference.child("civil").child("second_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.civilRadio.isChecked()  && binding.secondYear.isChecked() )
+                                    {
+                                        databaseReference.child("civil").child("second_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.civilRadio.isChecked()  && binding.secondYear.isChecked())
+                                    {
+                                        databaseReference.child("civil").child("second_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.civilRadio.isChecked()  && binding.secondYear.isChecked() )
+                                    {
+                                        databaseReference.child("civil").child("second_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.civilRadio.isChecked()  && binding.secondYear.isChecked() )
+                                    {
+                                        databaseReference.child("civil").child("second_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.civilRadio.isChecked()  && binding.secondYear.isChecked() )
+                                    {
+                                        databaseReference.child("civil").child("second_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.civilRadio.isChecked()  && binding.thirdYear.isChecked() )
+                                    {
+                                        databaseReference.child("civil").child("third_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else  if (binding.civilRadio.isChecked()  && binding.thirdYear.isChecked() )
+                                    {
+                                        databaseReference.child("civil").child("third_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else  if (binding.civilRadio.isChecked()  && binding.thirdYear.isChecked())
+                                    {
+                                        databaseReference.child("civil").child("third_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else  if (binding.civilRadio.isChecked()  && binding.thirdYear.isChecked() )
+                                    {
+                                        databaseReference.child("civil").child("third_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else  if (binding.civilRadio.isChecked()  && binding.thirdYear.isChecked() )
+                                    {
+                                        databaseReference.child("civil").child("third_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else  if (binding.civilRadio.isChecked()  && binding.thirdYear.isChecked() )
+                                    {
+                                        databaseReference.child("civil").child("third_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+
+                                    // IT
+
+
+
+
+
+                                    else if (binding.ITRadio.isChecked()  && binding.firstYear.isChecked() ) {
+                                        databaseReference.child("IT").child("first_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                    else if (binding.ITRadio.isChecked()  && binding.firstYear.isChecked() )
+                                    {
+                                        databaseReference.child("IT").child("first_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.ITRadio.isChecked()  && binding.firstYear.isChecked())
+                                    {
+                                        databaseReference.child("IT").child("first_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.ITRadio.isChecked()  && binding.firstYear.isChecked() )
+                                    {
+                                        databaseReference.child("IT").child("first_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                    else if (binding.ITRadio.isChecked()  && binding.firstYear.isChecked() )
+                                    {
+                                        databaseReference.child("IT").child("first_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.ITRadio.isChecked()  && binding.firstYear.isChecked() )
+                                    {
+                                        databaseReference.child("IT").child("first_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.ITRadio.isChecked()  && binding.secondYear.isChecked() )
+                                    {
+                                        databaseReference.child("IT").child("second_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.ITRadio.isChecked()  && binding.secondYear.isChecked() )
+                                    {
+                                        databaseReference.child("IT").child("second_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.ITRadio.isChecked()  && binding.secondYear.isChecked())
+                                    {
+                                        databaseReference.child("IT").child("second_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.ITRadio.isChecked()  && binding.secondYear.isChecked() )
+                                    {
+                                        databaseReference.child("IT").child("second_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.ITRadio.isChecked()  && binding.secondYear.isChecked() )
+                                    {
+                                        databaseReference.child("IT").child("second_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.ITRadio.isChecked()  && binding.secondYear.isChecked() )
+                                    {
+                                        databaseReference.child("IT").child("second_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.ITRadio.isChecked()  && binding.thirdYear.isChecked() )
+                                    {
+                                        databaseReference.child("IT").child("third_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else  if (binding.ITRadio.isChecked()  && binding.thirdYear.isChecked() )
+                                    {
+                                        databaseReference.child("IT").child("third_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else  if (binding.ITRadio.isChecked()  && binding.thirdYear.isChecked())
+                                    {
+                                        databaseReference.child("IT").child("third_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else  if (binding.ITRadio.isChecked()  && binding.thirdYear.isChecked() )
+                                    {
+                                        databaseReference.child("IT").child("third_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else  if (binding.ITRadio.isChecked()  && binding.thirdYear.isChecked() )
+                                    {
+                                        databaseReference.child("IT").child("third_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else  if (binding.ITRadio.isChecked()  && binding.thirdYear.isChecked() )
+                                    {
+                                        databaseReference.child("IT").child("third_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+
+//                                    E and TC
+
+
+
+
+
+                                    else if (binding.eAndTcRadio.isChecked()  && binding.firstYear.isChecked() ) {
+                                        databaseReference.child("E_and_TC").child("first_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                    else if (binding.eAndTcRadio.isChecked()  && binding.firstYear.isChecked() )
+                                    {
+                                        databaseReference.child("E_and_TC").child("first_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.eAndTcRadio.isChecked()  && binding.firstYear.isChecked())
+                                    {
+                                        databaseReference.child("E_and_TC").child("first_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.eAndTcRadio.isChecked()  && binding.firstYear.isChecked() )
+                                    {
+                                        databaseReference.child("E_and_TC").child("first_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                    else if (binding.eAndTcRadio.isChecked()  && binding.firstYear.isChecked() )
+                                    {
+                                        databaseReference.child("E_and_TC").child("first_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.eAndTcRadio.isChecked()  && binding.firstYear.isChecked() )
+                                    {
+                                        databaseReference.child("E_and_TC").child("first_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.eAndTcRadio.isChecked()  && binding.secondYear.isChecked() )
+                                    {
+                                        databaseReference.child("E_and_TC").child("second_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.eAndTcRadio.isChecked()  && binding.secondYear.isChecked() )
+                                    {
+                                        databaseReference.child("E_and_TC").child("second_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.eAndTcRadio.isChecked()  && binding.secondYear.isChecked())
+                                    {
+                                        databaseReference.child("E_and_TC").child("second_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.eAndTcRadio.isChecked()  && binding.secondYear.isChecked() )
+                                    {
+                                        databaseReference.child("E_and_TC").child("second_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.eAndTcRadio.isChecked()  && binding.secondYear.isChecked() )
+                                    {
+                                        databaseReference.child("E_and_TC").child("second_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.eAndTcRadio.isChecked()  && binding.secondYear.isChecked() )
+                                    {
+                                        databaseReference.child("E_and_TC").child("second_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else if (binding.eAndTcRadio.isChecked()  && binding.thirdYear.isChecked() )
+                                    {
+                                        databaseReference.child("E_and_TC").child("third_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else  if (binding.eAndTcRadio.isChecked()  && binding.thirdYear.isChecked() )
+                                    {
+                                        databaseReference.child("E_and_TC").child("third_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else  if (binding.eAndTcRadio.isChecked()  && binding.thirdYear.isChecked())
+                                    {
+                                        databaseReference.child("E_and_TC").child("third_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else  if (binding.eAndTcRadio.isChecked()  && binding.thirdYear.isChecked() )
+                                    {
+                                        databaseReference.child("E_and_TC").child("third_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else  if (binding.eAndTcRadio.isChecked()  && binding.thirdYear.isChecked() )
+                                    {
+                                        databaseReference.child("E_and_TC").child("third_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                    else  if (binding.eAndTcRadio.isChecked()  && binding.thirdYear.isChecked() )
+                                    {
+                                        databaseReference.child("E_and_TC").child("third_year").child(databaseReference.push().getKey()).setValue(filemodel);
+                                        binding.img1.setVisibility(View.INVISIBLE);
+                                        binding.upload.setVisibility(View.INVISIBLE);
+                                        binding.cancel.setVisibility(View.INVISIBLE);
+                                        binding.title.setText("");
+                                        pd.dismiss();
+                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+
+
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -239,6 +1251,29 @@ public class labmanuals extends AppCompatActivity {
 
 
     }
+    public String get_file_name_from_uri(Uri filepath)
+    {
+        String result = null;
+        if (filepath.getScheme().equals("content")) {
+            Cursor cursor = getContentResolver().query(filepath, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        if (result == null) {
+            result = filepath.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -249,7 +1284,8 @@ public class labmanuals extends AppCompatActivity {
             binding.img1.setVisibility(View.VISIBLE);
             binding.cancel.setVisibility(View.VISIBLE);
             binding.upload.setVisibility(View.VISIBLE);
-
+            binding.title.setText(get_file_name_from_uri(file_path));
+            name = get_file_name_from_uri(file_path);
 
         }
     }

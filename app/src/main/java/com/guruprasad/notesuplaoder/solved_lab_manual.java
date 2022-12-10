@@ -64,7 +64,8 @@ public class solved_lab_manual extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference("admin_solved_lab_manual");
 
         TextView pagename = findViewById(R.id.page_name);
-        pagename.setText("Upload Lab manual");
+        pagename.setText("Upload Solved Lab manual");
+        pagename.setTextSize(15);
 
         ImageButton back = findViewById(R.id.back_button);
         back.setOnClickListener(new View.OnClickListener() {
