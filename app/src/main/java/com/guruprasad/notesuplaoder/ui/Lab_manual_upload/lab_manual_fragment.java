@@ -9,21 +9,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.guruprasad.notesuplaoder.Department_adapter.E_and_TC_FY;
-import com.guruprasad.notesuplaoder.Department_adapter.E_and_TC_SY;
-import com.guruprasad.notesuplaoder.Department_adapter.E_and_TC_TY;
-import com.guruprasad.notesuplaoder.Department_adapter.IT_FY;
-import com.guruprasad.notesuplaoder.Department_adapter.IT_SY;
-import com.guruprasad.notesuplaoder.Department_adapter.IT_TY;
-import com.guruprasad.notesuplaoder.Department_adapter.civil_FY;
-import com.guruprasad.notesuplaoder.Department_adapter.civil_SY;
-import com.guruprasad.notesuplaoder.Department_adapter.civil_TY;
-import com.guruprasad.notesuplaoder.Department_adapter.comp_FY;
-import com.guruprasad.notesuplaoder.Department_adapter.comp_SY;
-import com.guruprasad.notesuplaoder.Department_adapter.comp_TY;
-import com.guruprasad.notesuplaoder.Department_adapter.mech_FY;
-import com.guruprasad.notesuplaoder.Department_adapter.mech_SY;
-import com.guruprasad.notesuplaoder.Department_adapter.mech_TY;
+import com.guruprasad.notesuplaoder.Semester.semester_1;
+import com.guruprasad.notesuplaoder.Semester.semester_2;
+import com.guruprasad.notesuplaoder.Semester.semester_3;
+import com.guruprasad.notesuplaoder.Semester.semester_4;
+import com.guruprasad.notesuplaoder.Semester.semester_5;
+import com.guruprasad.notesuplaoder.Semester.semester_6;
 import com.guruprasad.notesuplaoder.databinding.FragmentLabManualBinding;
 
 public class lab_manual_fragment extends Fragment {
@@ -38,87 +29,47 @@ public class lab_manual_fragment extends Fragment {
 
 
 
+
+
         binding.submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if (binding.computerRadio.isChecked() && binding.firstYear.isChecked())
+                if (binding.sem1Radio.isChecked() )
                 {
-                    startActivity(new Intent(view.getContext(), comp_FY.class));
+                    startActivity(new Intent(view.getContext(), semester_1.class));
 
                 }
-                else if (binding.computerRadio.isChecked() && binding.secondYear.isChecked())
-                {
-                    startActivity(new Intent(view.getContext(), comp_SY.class));
 
-                }
-                else if (binding.computerRadio.isChecked() && binding.thirdYear.isChecked())
+
+
+                else if (binding.sem2Radio.isChecked() )
                 {
-                    startActivity(new Intent(view.getContext(), comp_TY.class));
+                    startActivity(new Intent(view.getContext(), semester_2.class));
                 }
 
-                // mechanical
 
-                else if (binding.mechanicalRadio.isChecked() && binding.firstYear.isChecked())
+                else if (binding.sem3Radio.isChecked() )
                 {
-                    startActivity(new Intent(view.getContext(), mech_FY.class));
-                }
-                else if (binding.mechanicalRadio.isChecked() && binding.secondYear.isChecked())
-                {
-                    startActivity(new Intent(view.getContext(), mech_SY.class));
-
-                }
-                else if (binding.mechanicalRadio.isChecked() && binding.thirdYear.isChecked())
-                {
-                    startActivity(new Intent(view.getContext(), mech_TY.class));
+                    startActivity(new Intent(view.getContext(), semester_3.class));
                 }
 
-                // civil
 
-                else if (binding.civilRadio.isChecked() && binding.firstYear.isChecked())
+                else if (binding.sem4Radio.isChecked() )
                 {
-                    startActivity(new Intent(view.getContext(), civil_FY.class));
-                }
-                else if (binding.civilRadio.isChecked() && binding.secondYear.isChecked())
-                {
-                    startActivity(new Intent(view.getContext(), civil_SY.class));
-
-                }
-                else if (binding.civilRadio.isChecked() && binding.thirdYear.isChecked())
-                {
-                    startActivity(new Intent(view.getContext(), civil_TY.class));
+                    startActivity(new Intent(view.getContext(), semester_4.class));
                 }
 
-                //E and TC
 
-                else if (binding.eAndTcRadio.isChecked() && binding.firstYear.isChecked())
-                {
-                    startActivity(new Intent(view.getContext(), E_and_TC_FY.class));
-                }
-                else if (binding.eAndTcRadio.isChecked() && binding.secondYear.isChecked())
-                {
-                    startActivity(new Intent(view.getContext(), E_and_TC_SY.class));
 
-                }
-                else if (binding.eAndTcRadio.isChecked() && binding.thirdYear.isChecked())
-                {
-                    startActivity(new Intent(view.getContext(), E_and_TC_TY.class));
-                }
 
-                // IT
-
-                else if (binding.ITRadio.isChecked() && binding.firstYear.isChecked())
+                else if (binding.sem5Radio.isChecked() )
                 {
-                    startActivity(new Intent(view.getContext(), IT_FY.class));
-                }
-                else if (binding.ITRadio.isChecked() && binding.secondYear.isChecked())
+                    startActivity(new Intent(view.getContext(), semester_5.class));
+                } 
+                else if (binding.sem6Radio.isChecked() )
                 {
-                    startActivity(new Intent(view.getContext(), IT_SY.class));
-
-                }
-                else if (binding.ITRadio.isChecked() && binding.thirdYear.isChecked())
-                {
-                    startActivity(new Intent(view.getContext(), IT_TY.class));
+                    startActivity(new Intent(view.getContext(), semester_6.class));
                 }
 
 

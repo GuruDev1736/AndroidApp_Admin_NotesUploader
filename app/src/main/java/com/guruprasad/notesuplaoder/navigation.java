@@ -34,6 +34,7 @@ public class navigation extends AppCompatActivity {
     FirebaseUser firebaseUser;
     FirebaseAuth auth;
       FloatingActionButton notes , labmanual , solved_labmanual ;
+      myadapter adapter ;
     
 
     @Override
@@ -132,6 +133,7 @@ public class navigation extends AppCompatActivity {
 
 
     }
+
 
     @Override
     public boolean onSupportNavigateUp() {

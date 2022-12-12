@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Department_adapter.E_and_TC_SY">
+    android:background="@color/black"
+    tools:context=".Semester.semester_6">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/E_and_TC_sy_rec"
+        android:id="@+id/sem_6_rec"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"

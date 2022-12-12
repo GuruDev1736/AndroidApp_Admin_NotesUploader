@@ -25,15 +25,15 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="50dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="50dp"
                 android:layout_marginEnd="50dp"
                 android:gravity="center"
-                android:text="Select the department"
+                android:text="Select the Semester"
                 android:textColor="@color/white"
                 android:textSize="25dp" />
 
             <RadioGroup
-                android:id="@+id/department_radio"
+                android:id="@+id/semester_radio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textview"
@@ -43,87 +43,63 @@
                 android:layout_marginEnd="150dp">
 
                 <RadioButton
-                    android:id="@+id/computer_radio"
+                    android:id="@+id/sem_1_radio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:checked="true"
-                    android:text="Computer" />
+                    android:textColor="@color/white"
+
+                    android:text="Semester -1" />
 
                 <RadioButton
-                    android:id="@+id/mechanical_radio"
+                    android:id="@+id/sem_2_radio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Mechanical" />
+                    android:textColor="@color/white"
+
+                    android:text="Semester -2" />
 
                 <RadioButton
-                    android:id="@+id/civil_radio"
+                    android:id="@+id/sem_3_radio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Civil" />
+                    android:textColor="@color/white"
+
+                    android:text="Semester -3" />
 
                 <RadioButton
-                    android:id="@+id/IT_radio"
+                    android:id="@+id/sem_4_radio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="IT" />
+                    android:textColor="@color/white"
+
+                    android:text="Semester -4" />
 
                 <RadioButton
-                    android:id="@+id/e_and_tc_radio"
+                    android:id="@+id/sem_5_radio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="E And TC" />
+                    android:textColor="@color/white"
+
+                    android:text="Semester -5" />
+
+
+                <RadioButton
+                    android:id="@+id/sem_6_radio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+
+                    android:text="Semester -6" />
 
             </RadioGroup>
-
-            <TextView
-                android:id="@+id/year_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/department_radio"
-                android:layout_marginTop="20dp"
-                android:gravity="center"
-                android:text="Select Year"
-                android:textColor="@color/white"
-                android:textSize="25dp" />
-
-            <RadioGroup
-                android:id="@+id/year_radio"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/year_name"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="150dp">
-
-                <RadioButton
-                    android:id="@+id/first_year"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="First Year" />
-
-                <RadioButton
-                    android:id="@+id/second_year"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Second Year" />
-
-                <RadioButton
-                    android:id="@+id/third_year"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Third Year" />
-            </RadioGroup>
-
 
 
             <Button
                 android:id="@+id/submit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/year_radio"
+                android:layout_below="@+id/semester_radio"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="100dp"

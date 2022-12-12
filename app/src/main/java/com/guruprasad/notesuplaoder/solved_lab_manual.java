@@ -34,6 +34,8 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+import java.util.Objects;
+
 public class solved_lab_manual extends AppCompatActivity {
     Uri file_path;
     ActivitySolvedLabManualBinding binding ;
@@ -56,6 +58,8 @@ public class solved_lab_manual extends AppCompatActivity {
 
         binding = ActivitySolvedLabManualBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        Objects.requireNonNull(getSupportActionBar()).hide();
+
 
         database = FirebaseDatabase.getInstance();
         storage = FirebaseStorage.getInstance();

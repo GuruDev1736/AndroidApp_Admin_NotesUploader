@@ -41,7 +41,7 @@
             android:gravity="center"
             android:text="This is Header Text"
             android:textColor="#fff"
-            android:textSize="25sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
 

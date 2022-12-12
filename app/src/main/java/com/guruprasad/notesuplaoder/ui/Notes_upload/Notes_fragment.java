@@ -42,6 +42,8 @@ public class Notes_fragment extends Fragment {
         return root;
     }
 
+
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();

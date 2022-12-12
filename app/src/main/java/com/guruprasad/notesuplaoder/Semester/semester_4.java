@@ -1,4 +1,4 @@
-package com.guruprasad.notesuplaoder.Department_adapter;
+package com.guruprasad.notesuplaoder.Semester;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,24 +14,28 @@ import com.guruprasad.notesuplaoder.adapter.lab_manual_adapter;
 import com.guruprasad.notesuplaoder.file_model;
 import com.guruprasad.notesuplaoder.navigation;
 
-public class comp_TY extends AppCompatActivity {
+import java.util.Objects;
+
+public class semester_4 extends AppCompatActivity {
     RecyclerView recyclerView;
     lab_manual_adapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_comp_ty);
+        setContentView(R.layout.layout_sem_4);
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
 
-        recyclerView = findViewById(R.id.comp_ty_rec);
+        recyclerView = findViewById(R.id.sem_4_rec);
 
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        FirebaseRecyclerOptions<file_model> options = new FirebaseRecyclerOptions.Builder<file_model>().setQuery(FirebaseDatabase.getInstance().getReference("admin_lab_manual").child("computer").child("third_year"),file_model.class).build();
+        FirebaseRecyclerOptions<file_model> options = new FirebaseRecyclerOptions.Builder<file_model>().setQuery(FirebaseDatabase.getInstance().getReference("admin_lab_manual").child("semester 4"),file_model.class).build();
 
         adapter = new lab_manual_adapter(options);
         adapter.startListening();
         recyclerView.setAdapter(adapter);
+
 
 
     }

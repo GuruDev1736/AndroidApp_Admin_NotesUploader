@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Department_adapter.mech_FY">
+    android:background="@color/black"
+    tools:context=".Semester.semester_1">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/mech_fy_rec"
+        android:id="@+id/sem_1_rec"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
