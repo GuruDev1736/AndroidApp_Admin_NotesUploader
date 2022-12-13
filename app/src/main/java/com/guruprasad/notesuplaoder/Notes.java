@@ -1,6 +1,7 @@
 package com.guruprasad.notesuplaoder;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -39,6 +40,7 @@ import java.util.Objects;
 
 
 public class Notes extends AppCompatActivity {
+    Uri filepath ;
     Button browse ;
         ImageButton back ;
     StorageReference storageReference ;
@@ -128,16 +130,24 @@ public class Notes extends AppCompatActivity {
             {
                 for (int i = 0 ; i<data.getClipData().getItemCount();i++)
                 {
-                    Uri fileuri = data.getClipData().getItemAt(i).getUri();
-                    String filename = get_file_name_from_uri(fileuri);
+                    filepath= data.getClipData().getItemAt(i).getUri();
+                    String filename = get_file_name_from_uri(filepath);
                     files.add(filename);
                     status.add("loading");
                     uploadAdpter.notifyDataSetChanged();
 
                   final int index = i ;
 
+                    ProgressDialog pd = new ProgressDialog(Notes.this);
+                    pd.setTitle("Lab Manual is Uploading");
+                    pd.setMessage("PLease Wait ....");
+                    pd.setCancelable(false);
+                    pd.setCanceledOnTouchOutside(false);
+                    pd.show();
+
+
                     StorageReference uploader = storageReference.child("/admin_pdf").child(filename);
-                    uploader.putFile(fileuri)
+                    uploader.putFile(filepath)
                             .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                 @Override
                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -150,6 +160,7 @@ public class Notes extends AppCompatActivity {
                                             status.remove(index);
                                             status.add(index,"done");
                                             uploadAdpter.notifyDataSetChanged();
+                                            pd.dismiss();
 
                                         }
                                     });
@@ -159,6 +170,7 @@ public class Notes extends AppCompatActivity {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
                                     Toast.makeText(Notes.this, "Error :" +e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    pd.dismiss();
                                 }
                             });
 

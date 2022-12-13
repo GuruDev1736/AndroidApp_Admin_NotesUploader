@@ -8,16 +8,15 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
-import android.text.TextUtils;
-import android.view.View;
 import android.widget.ImageButton;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -28,6 +27,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.guruprasad.notesuplaoder.adapter.uploadAdpter;
 import com.guruprasad.notesuplaoder.databinding.ActivityLabmanualsBinding;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -36,6 +36,8 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class labmanuals extends AppCompatActivity {
@@ -46,7 +48,12 @@ public class labmanuals extends AppCompatActivity {
     StorageReference storageReference ;
     FirebaseAuth auth;
     DatabaseReference databaseReference;
-    RadioButton radioButton ;
+
+
+    List<String> files , status ;
+    RecyclerView recview ;
+   uploadAdpter uploadAdpter ;
+
 
     String name = "";
 
@@ -61,6 +68,13 @@ public class labmanuals extends AppCompatActivity {
         binding = ActivityLabmanualsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         Objects.requireNonNull(getSupportActionBar()).hide();
+
+        files = new ArrayList<>();
+        status = new ArrayList<>();
+        recview = findViewById(R.id.recview);
+        recview .setLayoutManager(new LinearLayoutManager(this));
+        uploadAdpter = new uploadAdpter(files,status);
+        recview.setAdapter(uploadAdpter);
 
         database = FirebaseDatabase.getInstance();
         storage = FirebaseStorage.getInstance();
@@ -77,11 +91,7 @@ public class labmanuals extends AppCompatActivity {
             finish();
         });
 
-        binding.cancel.setOnClickListener(view -> {
-            binding.cancel.setVisibility(View.INVISIBLE);
-            binding.img1.setVisibility(View.INVISIBLE);
-            binding.upload.setVisibility(View.INVISIBLE);
-        });
+
 
        binding.browse.setOnClickListener(view -> {
            Dexter.withContext(view.getContext()).withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -90,8 +100,9 @@ public class labmanuals extends AppCompatActivity {
                        public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
                            Intent intent = new Intent();
                            intent.setType("application/pdf");
+                           intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
                            intent.setAction(Intent.ACTION_GET_CONTENT);
-                           startActivityForResult(Intent.createChooser(intent, "Select PDF File"), 101);
+                           startActivityForResult(Intent.createChooser(intent,"Select PDF File"),101);
                        }
 
                        @Override
@@ -106,27 +117,61 @@ public class labmanuals extends AppCompatActivity {
                    }).check();
        });
 
-       binding.upload.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
 
-               String name_of_manual = String.valueOf(binding.title.getText());
 
-               if (TextUtils.isEmpty(name_of_manual))
-               {
-                    binding.title.setError("Enter the name of the lab manual");
-                    Toast.makeText(labmanuals.this, "Enter the name of the lab manual", Toast.LENGTH_SHORT).show();
-                   return;
-               }
-               else
-               {
-                   ProgressDialog pd = new ProgressDialog(view.getContext());
+
+
+
+    }
+    public String get_file_name_from_uri(Uri file_path)
+    {
+        String result = null;
+        if (file_path.getScheme().equals("content")) {
+            Cursor cursor = getContentResolver().query(file_path, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        if (result == null) {
+            result = file_path.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==101 && resultCode==RESULT_OK)
+        {
+            if (data.getClipData()!=null)
+            {
+                for (int i = 0 ; i<data.getClipData().getItemCount();i++)
+                {
+                    file_path = data.getClipData().getItemAt(i).getUri();
+                    String filename = get_file_name_from_uri(file_path);
+                    files.add(filename);
+                    status.add("loading");
+                    uploadAdpter.notifyDataSetChanged();
+
+                    final int index = i ;
+
+                    ProgressDialog pd = new ProgressDialog(labmanuals.this);
                     pd.setTitle("Lab Manual is Uploading");
                     pd.setMessage("PLease Wait ....");
                     pd.setCancelable(false);
                     pd.setCanceledOnTouchOutside(false);
                     pd.show();
-                    StorageReference reference = storageReference.child("admin_lab_manual/"+name+".pdf");
+
+                    StorageReference reference = storageReference.child("admin_lab_manual/"+filename+".pdf");
                     reference.putFile(file_path).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -134,24 +179,22 @@ public class labmanuals extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Uri uri) {
 
-                                    file_model filemodel = new file_model(binding.title.getText().toString(), uri.toString(), auth.getCurrentUser().getUid());
+                                    file_model filemodel = new file_model(filename, uri.toString(), auth.getCurrentUser().getUid());
 
                                     if (binding.sem1Radio.isChecked()   ) {
                                         databaseReference.child("semester 1").child(databaseReference.push().getKey()).setValue(filemodel);
-                                        binding.img1.setVisibility(View.INVISIBLE);
-                                        binding.upload.setVisibility(View.INVISIBLE);
-                                        binding.cancel.setVisibility(View.INVISIBLE);
-                                        binding.title.setText("");
+                                        status.remove(index);
+                                        status.add(index,"done");
+                                        uploadAdpter.notifyDataSetChanged();
                                         pd.dismiss();
                                         Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
 
                                     }
                                     else if (binding.sem2Radio.isChecked()   ) {
                                         databaseReference.child("semester 2").child(databaseReference.push().getKey()).setValue(filemodel);
-                                        binding.img1.setVisibility(View.INVISIBLE);
-                                        binding.upload.setVisibility(View.INVISIBLE);
-                                        binding.cancel.setVisibility(View.INVISIBLE);
-                                        binding.title.setText("");
+                                        status.remove(index);
+                                        status.add(index,"done");
+                                        uploadAdpter.notifyDataSetChanged();
                                         pd.dismiss();
                                         Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
 
@@ -159,20 +202,18 @@ public class labmanuals extends AppCompatActivity {
 
                                     else if (binding.sem3Radio.isChecked()   ) {
                                         databaseReference.child("semester 3").child(databaseReference.push().getKey()).setValue(filemodel);
-                                        binding.img1.setVisibility(View.INVISIBLE);
-                                        binding.upload.setVisibility(View.INVISIBLE);
-                                        binding.cancel.setVisibility(View.INVISIBLE);
-                                        binding.title.setText("");
+                                        status.remove(index);
+                                        status.add(index,"done");
+                                        uploadAdpter.notifyDataSetChanged();
                                         pd.dismiss();
                                         Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
 
                                     }
                                     else if (binding.sem4Radio.isChecked()   ) {
                                         databaseReference.child("semester 4").child(databaseReference.push().getKey()).setValue(filemodel);
-                                        binding.img1.setVisibility(View.INVISIBLE);
-                                        binding.upload.setVisibility(View.INVISIBLE);
-                                        binding.cancel.setVisibility(View.INVISIBLE);
-                                        binding.title.setText("");
+                                        status.remove(index);
+                                        status.add(index,"done");
+                                        uploadAdpter.notifyDataSetChanged();
                                         pd.dismiss();
                                         Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
 
@@ -180,20 +221,18 @@ public class labmanuals extends AppCompatActivity {
 
                                     else if (binding.sem5Radio.isChecked()   ) {
                                         databaseReference.child("semester 5").child(databaseReference.push().getKey()).setValue(filemodel);
-                                        binding.img1.setVisibility(View.INVISIBLE);
-                                        binding.upload.setVisibility(View.INVISIBLE);
-                                        binding.cancel.setVisibility(View.INVISIBLE);
-                                        binding.title.setText("");
+                                        status.remove(index);
+                                        status.add(index,"done");
+                                        uploadAdpter.notifyDataSetChanged();
                                         pd.dismiss();
                                         Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
 
                                     }
                                     else if (binding.sem6Radio.isChecked()   ) {
                                         databaseReference.child("semester 6").child(databaseReference.push().getKey()).setValue(filemodel);
-                                        binding.img1.setVisibility(View.INVISIBLE);
-                                        binding.upload.setVisibility(View.INVISIBLE);
-                                        binding.cancel.setVisibility(View.INVISIBLE);
-                                        binding.title.setText("");
+                                        status.remove(index);
+                                        status.add(index,"done");
+                                        uploadAdpter.notifyDataSetChanged();
                                         pd.dismiss();
                                         Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
 
@@ -217,54 +256,8 @@ public class labmanuals extends AppCompatActivity {
                             pd.setMessage("File uploaded : "+(int)per+"%");
                         }
                     });
-
-
-               }
-
-
-           }
-       });
-
-
-
-
-    }
-    public String get_file_name_from_uri(Uri filepath)
-    {
-        String result = null;
-        if (filepath.getScheme().equals("content")) {
-            Cursor cursor = getContentResolver().query(filepath, null, null, null, null);
-            try {
-                if (cursor != null && cursor.moveToFirst()) {
-                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
                 }
-            } finally {
-                cursor.close();
             }
-        }
-        if (result == null) {
-            result = filepath.getPath();
-            int cut = result.lastIndexOf('/');
-            if (cut != -1) {
-                result = result.substring(cut + 1);
-            }
-        }
-        return result;
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==101 && resultCode==RESULT_OK)
-        {
-            file_path = data.getData();
-            binding.img1.setVisibility(View.VISIBLE);
-            binding.cancel.setVisibility(View.VISIBLE);
-            binding.upload.setVisibility(View.VISIBLE);
-            binding.title.setText(get_file_name_from_uri(file_path));
-            name = get_file_name_from_uri(file_path);
-
         }
     }
 

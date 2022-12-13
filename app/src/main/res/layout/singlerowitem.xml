@@ -40,7 +40,7 @@
             android:layout_toEndOf="@id/img1"
             android:gravity="center"
             android:text="This is Header Text"
-            android:textColor="#fff"
+            android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
 

@@ -3,10 +3,12 @@ package com.guruprasad.notesuplaoder.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.guruprasad.notesuplaoder.R;
@@ -51,6 +53,8 @@ public class uploadAdpter extends RecyclerView.Adapter<uploadAdpter.myviewholder
 
             }
         }
+        holder.cardView.startAnimation(AnimationUtils.loadAnimation(holder.itemView.getContext(),R.anim.recycler_view_anime_2));
+
 
     }
 
@@ -69,6 +73,7 @@ public class uploadAdpter extends RecyclerView.Adapter<uploadAdpter.myviewholder
 
         ImageView fileicon  , pbar ;
         TextView filename ;
+        CardView cardView ;
 
 
         public myviewholder(@NonNull View itemView) {
@@ -77,6 +82,7 @@ public class uploadAdpter extends RecyclerView.Adapter<uploadAdpter.myviewholder
                 filename = itemView.findViewById(R.id.filename);
                 fileicon = itemView.findViewById(R.id.fileicon);
                 pbar = itemView.findViewById(R.id.pbar);
+                cardView = itemView.findViewById(R.id.card);
 
 
         }

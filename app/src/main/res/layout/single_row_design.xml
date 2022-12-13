@@ -7,6 +7,7 @@
     app:cardCornerRadius="5dp"
     android:padding="10dp"
     android:elevation="4dp"
+    android:id="@+id/card"
     app:cardUseCompatPadding="true"
     tools:ignore="UnusedAttribute">
 
@@ -39,8 +40,8 @@
             android:layout_marginBottom="4dp"
             android:layout_toEndOf="@+id/fileicon"
             android:text="FileName"
-            android:textColor="	#000"
-            android:textSize="20sp" />
+            android:textColor="@color/white"
+            android:textSize="18sp" />
 
         <ImageView
             android:id="@+id/pbar"
@@ -50,7 +51,8 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="5dp"
             android:layout_marginEnd="15dp"
-            android:src="@drawable/progress" />
+            android:src="@drawable/progress"
+            app:tint="#FFFFFF" />
 
     </RelativeLayout>
 
