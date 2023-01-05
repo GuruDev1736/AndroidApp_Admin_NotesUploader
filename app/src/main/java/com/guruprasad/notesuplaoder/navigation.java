@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -115,7 +117,7 @@ public class navigation extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
+                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow , R.id.nav_lib)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_navigation);
@@ -129,10 +131,49 @@ public class navigation extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.navigation, menu);
+
+
+
         return true;
 
 
     }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        int id = item.getItemId();
+
+        switch (id)
+        {
+            case R.id.action_settings:
+                Toast.makeText(this, "This is setting", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.logout:
+                FirebaseUser user = auth.getCurrentUser();
+                if (user!=null)
+                {
+                    auth.signOut();
+                    Toast.makeText(this, " Sign Out ", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                    finish();
+
+                }
+                else
+                {
+                    Toast.makeText(this, "You aren't login Yet!", Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
 
 
     @Override

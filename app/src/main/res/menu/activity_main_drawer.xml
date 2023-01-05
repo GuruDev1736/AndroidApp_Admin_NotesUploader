@@ -16,5 +16,16 @@
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_baseline_bookmark_add_24"
             android:title="@string/menu_solved_lab_manual" />
+
+
+    </group>
+
+    <group android:checkableBehavior="none">
+
+        <item
+            android:id="@+id/nav_lib"
+            android:icon="@drawable/ic_outline_local_library_24"
+            android:title="@string/library" />
+
     </group>
 </menu>

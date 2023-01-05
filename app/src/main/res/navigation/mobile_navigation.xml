@@ -22,4 +22,11 @@
         android:name="com.guruprasad.notesuplaoder.ui.solved_lab_manual_upload.solved_lab_manual_fragment"
         android:label="@string/menu_solved_lab_manual"
         tools:layout="@layout/fragment_solved_labmanual" />
+
+    <fragment
+        android:id="@+id/nav_lib"
+        android:name="com.guruprasad.notesuplaoder.ui.Library.pithos_library"
+        android:label="@string/library"
+        tools:layout="@layout/fragment_pithos_library" />
+
 </navigation>

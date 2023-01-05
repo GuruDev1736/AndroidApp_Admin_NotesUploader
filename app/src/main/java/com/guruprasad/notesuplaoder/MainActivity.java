@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,12 +17,15 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.guruprasad.notesuplaoder.controller.Custom_progrsss_bar;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
         EditText Email , password ;
         Button login ;
         FirebaseAuth firebaseAuth ;
-        ProgressBar progressBar ;
+
 
 
     @Override
@@ -31,13 +33,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
+        Objects.requireNonNull(getSupportActionBar()).hide();
         Email= findViewById(R.id.email_login);
         password = findViewById(R.id.password);
 
         login = findViewById(R.id.login);
-    firebaseAuth = FirebaseAuth.getInstance();
-    progressBar = findViewById(R.id.admin_progressbar);
+         firebaseAuth = FirebaseAuth.getInstance();
+
 
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -52,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                final Custom_progrsss_bar custom_progrsss_bar = new Custom_progrsss_bar(MainActivity.this);
+
+
                 String email = Email.getText().toString();
                 String pass = password.getText().toString();
 
@@ -67,8 +73,8 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
 
-                progressBar.setVisibility(View.VISIBLE);
 
+                custom_progrsss_bar.start_progress();
 
 
                 firebaseAuth.signInWithEmailAndPassword(email,pass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
@@ -77,13 +83,14 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(getApplicationContext(),navigation.class));
                         finish();
-                        progressBar.setVisibility(View.INVISIBLE);
+                        custom_progrsss_bar.dismiss_progress();
+
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(MainActivity.this, "Error : "+e.getMessage(), Toast.LENGTH_SHORT).show();
-                        progressBar.setVisibility(View.INVISIBLE);
+                        custom_progrsss_bar.dismiss_progress();
                     }
                 });
 
