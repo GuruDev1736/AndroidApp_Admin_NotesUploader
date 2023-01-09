@@ -22,6 +22,8 @@ public class semester_2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_sem_2);
         Objects.requireNonNull(getSupportActionBar()).setTitle("Semester 2 Lab Manual");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
 

@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
@@ -48,7 +49,7 @@ public class labmanuals extends AppCompatActivity {
     StorageReference storageReference ;
     FirebaseAuth auth;
     DatabaseReference databaseReference;
-
+    ImageButton back ;
 
     List<String> files , status ;
     RecyclerView recview ;
@@ -84,10 +85,11 @@ public class labmanuals extends AppCompatActivity {
 
         TextView pagename = findViewById(R.id.page_name);
         pagename.setText("Upload Lab manual");
+        pagename.setTextColor(Color.WHITE);
 
-        ImageButton back = findViewById(R.id.back_button);
+         back = findViewById(R.id.back_button);
         back.setOnClickListener(view -> {
-            startActivity(new Intent(getApplicationContext(),navigation.class));
+            startActivity(new Intent(getApplicationContext(),Notes.class));
             finish();
         });
 
@@ -264,7 +266,7 @@ public class labmanuals extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(getApplicationContext(),navigation.class));
+        startActivity(new Intent(getApplicationContext(),Notes.class));
         finish();
     }
 

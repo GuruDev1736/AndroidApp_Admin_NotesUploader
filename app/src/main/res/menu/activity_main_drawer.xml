@@ -20,7 +20,7 @@
 
     </group>
 
-    <group android:checkableBehavior="none">
+    <group android:checkableBehavior="none" android:visible="true" android:id="@+id/Library">
 
         <item
             android:id="@+id/nav_lib"
@@ -28,4 +28,15 @@
             android:title="@string/library" />
 
     </group>
+
+    <group android:id="@+id/Notification" android:visible="true" android:checkableBehavior="none">
+
+        <item android:id="@+id/nav_notification"
+            android:icon="@drawable/ic_outline_notifications_24"
+            android:title="@string/Notification" />
+
+
+    </group>
+
+
 </menu>

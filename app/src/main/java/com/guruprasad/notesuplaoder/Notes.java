@@ -206,7 +206,6 @@ public class Notes extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(getApplicationContext(),navigation.class));
-        finish();
+
     }
 }

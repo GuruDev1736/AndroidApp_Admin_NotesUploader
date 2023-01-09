@@ -22,6 +22,8 @@ public class semester_5 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_sem_5);
         Objects.requireNonNull(getSupportActionBar()).setTitle("Semester 3 Lab Manual");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
         recyclerView = findViewById(R.id.sem_5_rec);

@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
@@ -28,7 +29,6 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.guruprasad.notesuplaoder.adapter.uploadAdpter;
-import com.guruprasad.notesuplaoder.databinding.ActivityLabmanualsBinding;
 import com.guruprasad.notesuplaoder.databinding.ActivitySolvedLabManualBinding;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -91,10 +91,11 @@ public class solved_lab_manual extends AppCompatActivity {
 
         ImageButton back = findViewById(R.id.back_button);
         back.setOnClickListener(view -> {
-            startActivity(new Intent(getApplicationContext(),navigation.class));
+            startActivity(new Intent(getApplicationContext(),Notes.class));
             finish();
         });
         page_name.setTextSize(18);
+        page_name.setTextColor(Color.WHITE);
 
 
 
@@ -217,7 +218,7 @@ public class solved_lab_manual extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(getApplicationContext(),navigation.class));
+        startActivity(new Intent(getApplicationContext(),Notes.class));
         finish();
     }
 

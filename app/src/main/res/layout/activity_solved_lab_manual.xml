@@ -62,17 +62,17 @@
                 android:layout_marginStart="100dp"
                 android:layout_marginTop="50dp"
                 android:layout_marginEnd="100dp"
-                android:backgroundTint="#000000"
+                android:backgroundTint="#039BE5"
                 android:fontFamily="@font/aladin"
                 android:padding="15dp"
                 android:text="browse"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="18dp"
                 app:cornerRadius="15dp"
                 android:layout_marginBottom="50dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:strokeColor="#00BCD4"
+                app:strokeColor="#FFFFFF"
                 app:strokeWidth="2dp" />
 
         </RelativeLayout>
