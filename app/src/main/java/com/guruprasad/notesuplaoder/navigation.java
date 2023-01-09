@@ -1,6 +1,7 @@
 package com.guruprasad.notesuplaoder;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -8,6 +9,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,12 +22,18 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.bumptech.glide.Glide;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.guruprasad.notesuplaoder.databinding.ActivityNavigationBinding;
+
+import java.util.Objects;
 
 public class navigation extends AppCompatActivity {
 
@@ -53,32 +62,32 @@ public class navigation extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setBackgroundColor(Color.rgb(3,155,229));
 
         notes = findViewById(R.id.add_notes);
         labmanual = findViewById(R.id.add_lab_manual);
         solved_labmanual = findViewById(R.id.add_solved_lab_manual);
 
 
+        database.getReference().child("users").child(FirebaseAuth.getInstance().getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                TextView user = findViewById(R.id.username_nav);
+                 TextView email =findViewById(R.id.email_nav);
+                 ImageView img  = findViewById(R.id.profile_img_nav);
+                usermodel usermodel = snapshot.getValue(com.guruprasad.notesuplaoder.usermodel.class);
 
-//        TextView user = (TextView) findViewById(R.id.username_nav);
-//        TextView email =(TextView) findViewById(R.id.email_nav);
-//        ImageView img  = (ImageView) findViewById(R.id.profile_img_nav);
-//
-//        database.getReference().child("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                Map<String,Object> map = (Map<String, Object>) snapshot.getValue();
-//                usermodel usermodel = new usermodel(Objects.requireNonNull(map.get("full_name")).toString() , map.get("email").toString(), map.get("password").toString(), map.get("Phone_no").toString());
-//                user.setText(usermodel.getFull_name());
-//                email.setText(usermodel.getEmail());
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
+                    user.setText(Objects.requireNonNull(usermodel).getFull_name());
+                    email.setText(usermodel.getEmail());
+                Glide.with(navigation.this).load(usermodel.profile_pic).into(img);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(navigation.this, "An Error Occurred : "+error.getMessage().toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         notes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,7 +126,7 @@ public class navigation extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow , R.id.nav_lib)
+                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow , R.id.nav_lib , R.id.nav_notification)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_navigation);
