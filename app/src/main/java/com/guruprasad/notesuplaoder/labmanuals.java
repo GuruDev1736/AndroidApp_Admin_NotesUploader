@@ -167,8 +167,8 @@ public class labmanuals extends AppCompatActivity {
                     final int index = i ;
 
                     ProgressDialog pd = new ProgressDialog(labmanuals.this);
-                    pd.setTitle("Lab Manual is Uploading");
-                    pd.setMessage("PLease Wait ....");
+                    pd.setTitle("Lab Manual's are Uploading");
+                    pd.setMessage("Please Wait ....");
                     pd.setCancelable(false);
                     pd.setCanceledOnTouchOutside(false);
                     pd.show();

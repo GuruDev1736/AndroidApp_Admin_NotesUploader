@@ -30,9 +30,9 @@
         tools:layout="@layout/fragment_pithos_library" />
 
     <fragment
-        android:id="@+id/nav_notification"
-        android:name="com.guruprasad.notesuplaoder.ui.Notification.Pithos_Notification"
-        android:label="@string/Notification"
-        tools:layout="@layout/fragment_pithos__notification" />
+        android:id="@+id/nav_requested_books"
+        android:name="com.guruprasad.notesuplaoder.ui.Requested_Data.Requested_Books"
+        android:label="@string/Requested_books"
+        tools:layout="@layout/fragment_requested_books" />
 
 </navigation>

@@ -14,7 +14,55 @@
     <string name="menu_labmanual">Lab manual</string>
     <string name="menu_solved_lab_manual">Solved Lab Manual</string>
     <string name="library">Library Management</string>
-    <string name="Notification">Notification Generator</string>
+    <string name="Requested_books">Requested Books</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+
+    <string-array name="Languages">
+
+        <item>JAVA</item>
+        <item>KOTLIN</item>
+        <item>SWIFT</item>
+        <item>DART</item>
+        <item>HTML</item>
+        <item>CSS</item>
+        <item>JAVA SCRIPT</item>
+        <item>REACT JS</item>
+        <item>TYPE SCRIPT</item>
+        <item>ADVANCE JAVA</item>
+        <item>PYTHON</item>
+        <item>RUBY</item>
+        <item>GO</item>
+        <item>BLOCK CHAIN</item>
+        <item>SQL</item>
+        <item>PHP</item>
+        <item>NOE JS</item>
+        <item>NEXT JS</item>
+        <item>MONGODB</item>
+        <item>C</item>
+        <item>C++</item>
+        <item>C#</item>
+        <item>MS.NET FRAME WORK</item>
+        <item>RUST</item>
+        <item>ANDROID</item>
+        <item>FLUTTER</item>
+        <item>ANGULAR</item>
+        <item>JQUERY</item>
+        <item>REACT</item>
+        <item>OBJECTIVE C</item>
+        <item>MACHINE LEARNING</item>
+        <item>DATA SCIENCE</item>
+        <item>BOOTS STRAP</item>
+        <item>ARTIFICIAL INTELLIGENCE</item>
+        <item>ROBOTICS</item>
+        <item>LINUX</item>
+        <item>OPERATING SYSTEM</item>
+    </string-array>
+
+
+
+
+
 </resources>

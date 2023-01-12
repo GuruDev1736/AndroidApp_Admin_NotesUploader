@@ -6,9 +6,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="com.google.android.c2dm.permission.Receive"/>
-    <uses-permission android:name="com.google.android.c2dm.permission.Send"/>
-
+    <uses-permission android:name="com.google.android.c2dm.permission.Receive" />
+    <uses-permission android:name="com.google.android.c2dm.permission.Send" />
 
     <application
         android:allowBackup="true"
@@ -20,6 +19,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NotesUplaoder"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.Library.Books_Uploader"
+            android:exported="false"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".Semester.semester_3"
             android:exported="false"
@@ -105,10 +112,6 @@
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".menu"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
@@ -118,17 +121,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <service android:name=".ui.Notification.Message_Listener"
-
-            android:permission="com.google.android.c2dm.permission.Receive"
-            android:exported="true">
-
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-                <action android:name="com.google.android.c2dm.intent.Receive"/>
-            </intent-filter>
-        </service>
     </application>
 
 </manifest>

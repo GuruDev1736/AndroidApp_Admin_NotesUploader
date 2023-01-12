@@ -22,9 +22,9 @@
             android:icon="@drawable/ic_outline_local_library_24"
             android:title="@string/library" />
 
-        <item android:id="@+id/nav_notification"
-            android:icon="@drawable/ic_outline_notifications_24"
-            android:title="@string/Notification" />
+        <item android:id="@+id/nav_requested_books"
+            android:icon="@drawable/ic_outline_library_books_24"
+            android:title="@string/Requested_books" />
 
     </group>
 

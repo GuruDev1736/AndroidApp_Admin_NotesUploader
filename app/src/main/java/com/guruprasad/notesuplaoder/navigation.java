@@ -32,6 +32,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.guruprasad.notesuplaoder.databinding.ActivityNavigationBinding;
+import com.guruprasad.notesuplaoder.ui.Library.Books_Uploader;
 
 import java.util.Objects;
 
@@ -44,7 +45,7 @@ public class navigation extends AppCompatActivity {
     FirebaseDatabase database ;
     FirebaseUser firebaseUser;
     FirebaseAuth auth;
-      FloatingActionButton notes , labmanual , solved_labmanual ;
+      FloatingActionButton notes , labmanual , solved_labmanual , lib_books ;
       myadapter adapter ;
     
 
@@ -67,6 +68,7 @@ public class navigation extends AppCompatActivity {
         notes = findViewById(R.id.add_notes);
         labmanual = findViewById(R.id.add_lab_manual);
         solved_labmanual = findViewById(R.id.add_solved_lab_manual);
+        lib_books = findViewById(R.id.add_books);
 
 
         database.getReference().child("users").child(FirebaseAuth.getInstance().getUid()).addValueEventListener(new ValueEventListener() {
@@ -77,8 +79,8 @@ public class navigation extends AppCompatActivity {
                  ImageView img  = findViewById(R.id.profile_img_nav);
                 usermodel usermodel = snapshot.getValue(com.guruprasad.notesuplaoder.usermodel.class);
 
-                    user.setText(Objects.requireNonNull(usermodel).getFull_name());
-                    email.setText(usermodel.getEmail());
+                user.setText(Objects.requireNonNull(usermodel).getFull_name());
+                email.setText(usermodel.getEmail());
                 Glide.with(navigation.this).load(usermodel.profile_pic).into(img);
 
             }
@@ -115,6 +117,15 @@ public class navigation extends AppCompatActivity {
                 Toast.makeText(navigation.this, "Upload Solved Lab manual", Toast.LENGTH_SHORT).show();
             }
         });
+
+        lib_books.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), Books_Uploader.class));
+                finish();
+                Toast.makeText(navigation.this, "Upload Library Books", Toast.LENGTH_SHORT).show();
+            }
+        });
             
         
 
@@ -126,7 +137,7 @@ public class navigation extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow , R.id.nav_lib , R.id.nav_notification)
+                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow , R.id.nav_lib , R.id.nav_requested_books)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_navigation);

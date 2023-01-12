@@ -28,9 +28,22 @@
         app:fab_expandDirection="up"
         android:clickable="true"
         android:focusable="true"
-        android:layout_marginTop="350dp"
+        android:layout_marginTop="200dp"
         android:layout_marginStart="320dp"
         app:fab_labelsPosition="left">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_books"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="#fff"
+            app:fab_size="normal"
+            android:clickable="true"
+            android:focusable="true"
+            app:fab_icon="@drawable/ic_outline_library_books_24"
+            app:fab_title="Add Library Books"
+            />
+
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/add_solved_lab_manual"
@@ -69,6 +82,10 @@
             />
 
 
+
+
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
