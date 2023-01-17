@@ -33,10 +33,45 @@ public class solved_lab_manual_fragment extends Fragment {
         adapter.startListening();
         binding.solvedLabManualRec.setAdapter(adapter);
 
-
-
         return root;
     }
+
+//    @Override
+//    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+//
+//        inflater.inflate(R.menu.search, menu);
+//        MenuItem menuItem = menu.findItem(R.id.search);
+//        androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) menuItem.getActionView();
+//        searchView.setQueryHint("Type Here To Search");
+//
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                process_search(query);
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                process_search(newText);
+//                return false;
+//            }
+//        });
+//
+//        super.onCreateOptionsMenu(menu, inflater);
+//    }
+//    private void process_search(String query) {
+//        FirebaseRecyclerOptions<file_model> options =
+//                new FirebaseRecyclerOptions.Builder<file_model>().setQuery(FirebaseDatabase.getInstance()
+//                        .getReference("admin_solved_lab__manual").orderByChild("file_title")
+//                        .startAt(query).endAt(query+"\uf8ff"),file_model.class).build();
+//
+//        adapter = new lab_manual_adapter(options);
+//        adapter.startListening();
+//        binding.solvedLabManualRec.setAdapter(adapter);
+//
+//    }
+
 
     @Override
     public void onDestroyView() {

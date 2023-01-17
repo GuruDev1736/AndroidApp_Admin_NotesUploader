@@ -1,5 +1,6 @@
 package com.guruprasad.notesuplaoder;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -24,14 +26,21 @@ public class myadapter extends FirebaseRecyclerAdapter<filemodel,myadapter.myvie
 
     @Override
     protected void onBindViewHolder(@NonNull myviewholder holder, int position, @NonNull filemodel model) {
+
                 holder.header.setText(model.getFiletitle());
                 holder.imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                        intent.setType("application/pdf");
-                        intent.setData(Uri.parse(model.getFileurl()));
-                        holder.imageView.getContext().startActivity(intent);
+                        Uri path = Uri.parse(model.getFileurl());
+                        Intent pdfIntent = new Intent(Intent.ACTION_VIEW);
+                        pdfIntent.setDataAndType(path, "application/pdf");
+                        pdfIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        try {
+                            holder.imageView.getContext().startActivity(pdfIntent);
+                            Toast.makeText(view.getContext(), "Please Wait..... File is Loading ", Toast.LENGTH_LONG).show();
+                        } catch (ActivityNotFoundException e) {
+                            Toast.makeText(view.getContext(), "No Application available to viewPDF", Toast.LENGTH_SHORT).show();
+                        }
 
                     }
                 });
@@ -51,7 +60,7 @@ public class myadapter extends FirebaseRecyclerAdapter<filemodel,myadapter.myvie
     {
             TextView header ;
             ImageView imageView ;
-              CardView card ;
+            CardView card ;
 
         public myviewholder(@NonNull View itemView) {
             super(itemView);
