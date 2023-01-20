@@ -35,4 +35,10 @@
         android:label="@string/Requested_books"
         tools:layout="@layout/fragment_requested_books" />
 
+    <fragment
+        android:id="@+id/nav_upload_course"
+        android:name="com.guruprasad.notesuplaoder.ui.Course.Upload_Course"
+        android:label="@string/UploadCourse"
+        tools:layout="@layout/fragment_upload__course" />
+
 </navigation>

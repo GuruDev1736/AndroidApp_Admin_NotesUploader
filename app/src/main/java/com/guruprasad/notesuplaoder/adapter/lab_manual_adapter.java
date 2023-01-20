@@ -45,7 +45,7 @@ public class lab_manual_adapter extends FirebaseRecyclerAdapter<file_model,lab_m
                     holder.imageView.getContext().startActivity(pdfIntent);
                     Toast.makeText(view.getContext(), "Please Wait..... File is Loading ", Toast.LENGTH_LONG).show();
                 } catch (ActivityNotFoundException e) {
-                    Toast.makeText(view.getContext(), "No Application available to viewPDF", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(view.getContext(), "No Application available to view PDF", Toast.LENGTH_SHORT).show();
                 }
         }
         });

@@ -15,9 +15,9 @@
     <string name="menu_solved_lab_manual">Solved Lab Manual</string>
     <string name="library">Library Management</string>
     <string name="Requested_books">Requested Books</string>
+    <string name="UploadCourse">Upload Course</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
 
 
     <string-array name="Languages">
@@ -60,9 +60,6 @@
         <item>LINUX</item>
         <item>OPERATING SYSTEM</item>
     </string-array>
-
-
-
 
 
 </resources>

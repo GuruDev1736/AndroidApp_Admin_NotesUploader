@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="25dp"
+    android:padding="15dp"
+    android:elevation="4dp"
+    android:id="@+id/cardview"
+    app:cardUseCompatPadding="true"
+    tools:ignore="UnusedAttribute">
+
+    <RelativeLayout
+        android:id="@+id/relative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/singlrowdesign"
+        android:padding="15dp">
+
+
+        <ImageView
+            android:id="@+id/request"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="22dp"
+            android:src="@drawable/request" />
+
+        <TextView
+            android:id="@+id/request_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="15dp"
+            android:layout_toEndOf="@id/request"
+            android:gravity="center"
+            android:text="This is Header Text"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/request_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/request_name"
+            android:layout_alignStart="@+id/request_name"
+            android:layout_alignEnd="@+id/request_name"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="0dp"
+            android:gravity="center"
+            android:text="category"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/request_author"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/request_category"
+            android:layout_alignStart="@+id/request_category"
+            android:layout_alignEnd="@+id/request_category"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="0dp"
+            android:gravity="center"
+            android:text="Author"
+            android:textColor="@color/white" />
+
+            <TextView
+            android:id="@+id/request_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/request_author"
+            android:layout_alignStart="@+id/request_author"
+            android:layout_alignEnd="@+id/request_author"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="0dp"
+            android:gravity="center"
+            android:text="email"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/user_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/request_email"
+            android:layout_alignStart="@+id/request_author"
+            android:layout_alignEnd="@+id/request_author"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="0dp"
+            android:gravity="center"
+            android:text="User id"
+            android:textColor="@color/white" />
+
+
+
+
+
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

@@ -26,6 +26,10 @@
             android:icon="@drawable/ic_outline_library_books_24"
             android:title="@string/Requested_books" />
 
+        <item android:id="@+id/nav_upload_course"
+            android:icon="@drawable/training"
+            android:title="@string/UploadCourse" />
+
     </group>
 
 </menu>

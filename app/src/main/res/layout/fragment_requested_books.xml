@@ -8,8 +8,9 @@
     tools:context=".ui.Requested_Data.Requested_Books">
 
 
-
-
-
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/request_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
 </FrameLayout>
