@@ -33,7 +33,7 @@ public class lab_manual_adapter extends FirebaseRecyclerAdapter<file_model,lab_m
     protected void onBindViewHolder(@NonNull my_view_holder holder, int position, @NonNull file_model model) {
 
         holder.header.setText(model.getFile_title());
-        holder.imageView.setOnClickListener(new View.OnClickListener() {
+        holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 

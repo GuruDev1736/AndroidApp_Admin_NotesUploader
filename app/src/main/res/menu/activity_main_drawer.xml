@@ -30,6 +30,11 @@
             android:icon="@drawable/training"
             android:title="@string/UploadCourse" />
 
+
+        <item android:id="@+id/nav_upload_stream"
+            android:icon="@drawable/stream"
+            android:title="@string/UploadStream" />
+
     </group>
 
 </menu>

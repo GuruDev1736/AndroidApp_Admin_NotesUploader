@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -43,6 +45,7 @@ public class Notes extends AppCompatActivity {
     Uri filepath ;
     Button browse ;
         ImageButton back ;
+        TextView pagename ;
     StorageReference storageReference ;
     DatabaseReference databaseReference ;
     List<String> files , status ;
@@ -66,12 +69,16 @@ public class Notes extends AppCompatActivity {
         status = new ArrayList<>();
         browse= findViewById(R.id.browse);
         back = findViewById(R.id.back_button);
+        pagename = findViewById(R.id.page_name);
 
         recview = findViewById(R.id.recview);
         recview .setLayoutManager(new LinearLayoutManager(this));
 
         uploadAdpter = new uploadAdpter(files,status);
         recview.setAdapter(uploadAdpter);
+        pagename.setText("Upload Notes");
+        pagename.setTextSize(15);
+        pagename.setTextColor(Color.WHITE);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,9 +210,4 @@ public class Notes extends AppCompatActivity {
         return result;
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-    }
 }

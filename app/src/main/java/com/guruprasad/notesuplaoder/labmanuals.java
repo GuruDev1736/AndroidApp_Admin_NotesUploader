@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -86,12 +87,18 @@ public class labmanuals extends AppCompatActivity {
         TextView pagename = findViewById(R.id.page_name);
         pagename.setText("Upload Lab manual");
         pagename.setTextColor(Color.WHITE);
+        pagename.setTextSize(15);
 
-         back = findViewById(R.id.back_button);
-        back.setOnClickListener(view -> {
-            startActivity(new Intent(getApplicationContext(),Notes.class));
-            finish();
+        back = findViewById(R.id.back_button);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),navigation.class));
+                finish();
+            }
         });
+
+
 
 
 
@@ -262,13 +269,4 @@ public class labmanuals extends AppCompatActivity {
             }
         }
     }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        startActivity(new Intent(getApplicationContext(),Notes.class));
-        finish();
-    }
-
-
 }

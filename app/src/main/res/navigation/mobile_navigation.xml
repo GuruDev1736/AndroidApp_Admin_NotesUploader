@@ -41,4 +41,10 @@
         android:label="@string/UploadCourse"
         tools:layout="@layout/fragment_upload__course" />
 
+    <fragment
+        android:id="@+id/nav_upload_stream"
+        android:name="com.guruprasad.notesuplaoder.ui.Stream.Upload_Stream"
+        android:label="@string/UploadStream"
+        tools:layout="@layout/fragment_upload__stream" />
+
 </navigation>

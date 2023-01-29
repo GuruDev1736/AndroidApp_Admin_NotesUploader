@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/black"
+    android:layout_height="match_parent"
+    tools:context=".ui.Stream.Upload_Stream">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/name_stream_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="20dp"
+            app:boxCornerRadiusBottomEnd="10dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusTopStart="10dp"
+            android:hint="Stream or Music Name "
+            android:textColorHint="@color/white"
+            app:helperText="Required"
+            app:hintAnimationEnabled="true"
+            app:hintEnabled="true"
+            app:hintTextColor="@color/white"
+            app:helperTextTextColor="#F40000"
+            app:boxStrokeColor="#03A9F4"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/white"
+            app:boxStrokeErrorColor="#F40000">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/white"
+                android:textColor="@color/white"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/video_Id_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name_stream_layout"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="20dp"
+            android:hint="Video ID or Stream Id  "
+            android:textColorHint="@color/white"
+            app:boxCornerRadiusBottomEnd="10dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusTopStart="10dp"
+            app:boxStrokeColor="#03A9F4"
+            app:boxStrokeErrorColor="#F40000"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/white"
+            app:helperText="Required"
+            app:helperTextTextColor="#F40000"
+            app:hintAnimationEnabled="true"
+            app:hintEnabled="true"
+            app:hintTextColor="@color/white">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <Spinner
+            android:id="@+id/spinner_stream"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/video_Id_layout"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="20dp"
+            android:background="#00BCD4" />
+
+        <Button
+            android:id="@+id/submit_stream"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/spinner_stream"
+            android:layout_marginTop="50dp"
+            android:backgroundTint="@color/black"
+            android:text="Submit"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:textColor="@color/white"
+            app:cornerRadius="10dp"
+            android:padding="15dp"
+            app:strokeColor="#03A9F4"
+            app:strokeWidth="2dp" />
+
+
+    </RelativeLayout>
+
+
+
+</FrameLayout>

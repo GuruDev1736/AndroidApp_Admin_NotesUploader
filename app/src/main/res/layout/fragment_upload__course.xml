@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,112 +7,189 @@
     android:background="@color/black"
     tools:context=".ui.Course.Upload_Course">
 
-    <TextView
-        android:id="@+id/textView"
+    <RelativeLayout
+        android:id="@+id/relative_course"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="-1dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="5dp"
-        android:gravity="center"
-        android:text="UPLOAD COURSE"
-        android:textColor="#03A9F4"
-        android:textSize="25sp"
-        android:textStyle="bold" />
+        android:padding="10dp"
+        android:layout_height="wrap_content">
 
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layout_course"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="20dp"
-        android:hint="Enter the Course Name "
-        android:textColorHint="@color/white"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="201dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/course_name"
-            android:layout_width="match_parent"
+        <RadioGroup
+            android:id="@+id/radio_group"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:orientation="horizontal"
+            android:layout_alignParentEnd="true">
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/course_videos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Videos"
+                android:textColor="@color/white" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/course_notes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Notes"
+                android:textColor="@color/white" />
+
+
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/radio_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/radio_group"
+            android:layout_alignEnd="@+id/radio_group"
+            android:layout_alignBottom="@+id/radio_group"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="20dp"
+            android:padding="10dp"
+            android:layout_marginBottom="5dp"
+            android:backgroundTint="@color/black"
+            android:text="Submit"
             android:textColor="@color/white"
-            android:inputType="textLongMessage"
-            android:drawableStart="@drawable/ic_outline_menu_book_24"
-            android:drawablePadding="10dp" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:textStyle="bold"
+            app:cornerRadius="10dp"
+            app:strokeColor="#039BE5"
+            app:strokeWidth="2dp" />
 
-    <Spinner
-        android:id="@+id/course_spinner"
+
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_below="@+id/relative_course"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="400dp"
-        android:layout_marginEnd="20dp"
-        android:background="@color/white"
-        android:contentDescription="@string/app_name" />
+        android:layout_height="match_parent">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layout_Author"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="200dp"
-        android:layout_marginEnd="20dp"
-        android:hint="Enter the Author Name"
-        android:textColorHint="@color/white"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="201dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/author_name"
+        <FrameLayout
+            android:id="@+id/course_frame"
+            android:visibility="invisible"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/author"
-            android:drawablePadding="10dp"
-            android:inputType="textPersonName"
-            android:textColor="@color/white" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="wrap_content">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layout_video"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="300dp"
-        android:layout_marginEnd="20dp"
-        android:hint="Enter video ID"
-        android:textColorHint="@color/white"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="201dp">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layout_course"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginEnd="20dp"
+                android:hint="Enter the Course Name "
+                android:textColorHint="@color/white"
+                tools:layout_editor_absoluteX="1dp"
+                tools:layout_editor_absoluteY="201dp">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/video_id"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_outline_video_library_24"
-            android:drawablePadding="10dp"
-            android:inputType="numberPassword"
-            android:textColor="@color/white" />
-    </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/course_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:inputType="textLongMessage"
+                    android:drawableStart="@drawable/course_name"
+                    android:drawablePadding="10dp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/submit_course"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="500dp"
-        android:layout_marginEnd="100dp"
-        android:backgroundTint="@color/black"
-        android:padding="15dp"
-        android:text="Submit"
-        android:textColor="@color/white"
-        app:cornerRadius="10dp"
-        app:strokeColor="#039BE5"
-        app:strokeWidth="2dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Select Language"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_marginTop="350dp"
+                android:layout_marginLeft="20dp"/>
 
-</FrameLayout>
+
+            <Spinner
+                android:id="@+id/course_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="380dp"
+                android:layout_marginEnd="20dp"
+                android:background="#039BE5"
+                android:contentDescription="@string/app_name" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layout_Author"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="150dp"
+                android:layout_marginEnd="20dp"
+                app:helperText="(Optional)"
+                app:helperTextTextColor="#FF0000"
+                app:helperTextEnabled="true"
+                android:hint="Enter the Author Name"
+                android:textColorHint="@color/white"
+                tools:layout_editor_absoluteX="1dp"
+                tools:layout_editor_absoluteY="201dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/author_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/author"
+                    android:drawablePadding="10dp"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/white" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layout_video"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="250dp"
+                android:layout_marginEnd="20dp"
+                android:hint="Enter video ID"
+                app:helperTextEnabled="true"
+                app:helperTextTextColor="#FF0000"
+                app:helperText="Please Enter the Video Id Carefully"
+                android:textColorHint="@color/white"
+                tools:layout_editor_absoluteX="1dp"
+                tools:layout_editor_absoluteY="201dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/video_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_outline_video_library_24"
+                    android:drawablePadding="10dp"
+                    android:inputType="textShortMessage"
+                    android:textColor="@color/white" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/submit_course"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="100dp"
+                android:layout_marginTop="500dp"
+                android:layout_marginEnd="100dp"
+                android:backgroundTint="@color/black"
+                android:padding="15dp"
+                android:text="Submit"
+                android:textColor="@color/white"
+                app:cornerRadius="10dp"
+                app:strokeColor="#039BE5"
+                app:strokeWidth="2dp" />
+
+
+        </FrameLayout>
+    </ScrollView>
+</RelativeLayout>

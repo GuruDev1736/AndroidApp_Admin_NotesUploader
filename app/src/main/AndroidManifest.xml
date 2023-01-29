@@ -20,6 +20,13 @@
         android:theme="@style/Theme.NotesUplaoder"
         tools:targetApi="31">
         <activity
+            android:name=".ui.Course.course_notes_upload"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".ui.Library.Books_Uploader"
             android:exported="false"
             android:screenOrientation="portrait">

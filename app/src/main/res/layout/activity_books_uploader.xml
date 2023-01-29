@@ -32,10 +32,10 @@
 
     <Spinner
         android:id="@+id/lib_lang"
-        android:layout_width="350dp"
+        android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginTop="20dp"
-        android:background="@color/white"
+        android:background="#039BE5"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"

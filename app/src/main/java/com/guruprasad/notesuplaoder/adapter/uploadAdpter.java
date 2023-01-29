@@ -46,7 +46,7 @@ public class uploadAdpter extends RecyclerView.Adapter<uploadAdpter.myviewholder
             {
                 holder.pbar.setImageResource(R.drawable.progress);
             }
-            else
+            if (fileststatus.equals("done"))
             {
                 holder.pbar.setImageResource(R.drawable.check);
 

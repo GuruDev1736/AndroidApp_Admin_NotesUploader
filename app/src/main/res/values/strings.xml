@@ -16,6 +16,7 @@
     <string name="library">Library Management</string>
     <string name="Requested_books">Requested Books</string>
     <string name="UploadCourse">Upload Course</string>
+    <string name="UploadStream">Upload Stream</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
@@ -38,7 +39,7 @@
         <item>BLOCK CHAIN</item>
         <item>SQL</item>
         <item>PHP</item>
-        <item>NOE JS</item>
+        <item>NODE JS</item>
         <item>NEXT JS</item>
         <item>MONGODB</item>
         <item>C</item>
@@ -59,6 +60,17 @@
         <item>ROBOTICS</item>
         <item>LINUX</item>
         <item>OPERATING SYSTEM</item>
+    </string-array>
+
+    <string-array name="category">
+        <item>Videos</item>
+        <item>Notes</item>
+    </string-array>
+
+
+<string-array name="stream_category">
+        <item>Live Stream</item>
+        <item>Long Video</item>
     </string-array>
 
 
