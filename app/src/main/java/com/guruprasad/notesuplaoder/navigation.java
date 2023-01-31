@@ -36,6 +36,8 @@ import com.guruprasad.notesuplaoder.ui.Library.Books_Uploader;
 
 import java.util.Objects;
 
+import es.dmoral.toasty.Toasty;
+
 public class navigation extends AppCompatActivity {
 
 
@@ -87,7 +89,7 @@ public class navigation extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(navigation.this, "An Error Occurred : "+error.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                Toasty.error(navigation.this,"An Error Occurred : " + error.getMessage(),Toast.LENGTH_SHORT,true).show();
             }
         });
 
@@ -95,7 +97,8 @@ public class navigation extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(),Notes.class));
-                Toast.makeText(navigation.this, "upload your notes here ", Toast.LENGTH_SHORT).show();
+                Toasty.info(navigation.this,"upload your notes here",Toast.LENGTH_LONG,true).show();
+
             }
         });
 
@@ -103,7 +106,8 @@ public class navigation extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(),labmanuals.class));
-                Toast.makeText(navigation.this, "Upload Lab manuals", Toast.LENGTH_SHORT).show();
+                Toasty.info(navigation.this,"upload your Manuals here",Toast.LENGTH_LONG,true).show();
+
             }
         });
         
@@ -111,7 +115,8 @@ public class navigation extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(),solved_lab_manual.class));
-                Toast.makeText(navigation.this, "Upload Solved Lab manual", Toast.LENGTH_SHORT).show();
+                Toasty.info(navigation.this,"upload your Solved Manuals here",Toast.LENGTH_LONG,true).show();
+
             }
         });
 
@@ -119,7 +124,8 @@ public class navigation extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), Books_Uploader.class));
-                Toast.makeText(navigation.this, "Upload Library Books", Toast.LENGTH_SHORT).show();
+                Toasty.info(navigation.this,"upload your Books here",Toast.LENGTH_LONG,true).show();
+
             }
         });
             
@@ -163,7 +169,7 @@ public class navigation extends AppCompatActivity {
         switch (id)
         {
             case R.id.action_settings:
-                Toast.makeText(this, "This is setting", Toast.LENGTH_SHORT).show();
+                Toasty.info(navigation.this,"This is Setting",Toast.LENGTH_LONG,true).show();
                 break;
 
             case R.id.logout:
@@ -171,18 +177,21 @@ public class navigation extends AppCompatActivity {
                 if (user!=null)
                 {
                     auth.signOut();
-                    Toast.makeText(this, " Sign Out ", Toast.LENGTH_SHORT).show();
+                    Toasty.success(navigation.this,"Sign Out Successfully",Toast.LENGTH_LONG,true).show();
                     startActivity(new Intent(getApplicationContext(),MainActivity.class));
                     finish();
 
                 }
                 else
                 {
-                    Toast.makeText(this, "You aren't login Yet!", Toast.LENGTH_SHORT).show();
+                    Toasty.info(navigation.this,"You aren't login Yet!",Toast.LENGTH_LONG,true).show();
                 }
                 break;
 
-
+            case R.id.add_admin:
+                Toasty.info(navigation.this,"Register New Admin",Toast.LENGTH_LONG,true).show();
+                startActivity(new Intent(getApplicationContext(),admin_regestration.class));
+                break ;
 
         }
 
@@ -209,7 +218,8 @@ public class navigation extends AppCompatActivity {
         }
 
         this.backpress = true;
-        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        Toasty.info(navigation.this,"Please click BACK again to exit",Toast.LENGTH_SHORT,true).show();
 
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
 

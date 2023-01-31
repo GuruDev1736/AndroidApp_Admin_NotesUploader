@@ -68,9 +68,14 @@
     </string-array>
 
 
-<string-array name="stream_category">
+    <string-array name="stream_category">
         <item>Live Stream</item>
         <item>Long Video</item>
+    </string-array>
+
+    <string-array name="stream_Type">
+        <item>Coding Music</item>
+        <item>Study Music</item>
     </string-array>
 
 

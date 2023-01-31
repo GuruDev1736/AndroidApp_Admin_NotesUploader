@@ -21,6 +21,8 @@ import com.guruprasad.notesuplaoder.controller.Custom_progrsss_bar;
 
 import java.util.Objects;
 
+import es.dmoral.toasty.Toasty;
+
 public class MainActivity extends AppCompatActivity {
         EditText Email , password ;
         Button login ;
@@ -80,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 firebaseAuth.signInWithEmailAndPassword(email,pass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                        Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                        Toasty.success(MainActivity.this,"Login Successful",Toast.LENGTH_LONG,true).show();
                         startActivity(new Intent(getApplicationContext(),navigation.class));
                         finish();
                         custom_progrsss_bar.dismiss_progress();
@@ -89,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(MainActivity.this, "Error : "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toasty.error(MainActivity.this,"Login Failed : " + e.getMessage(),Toast.LENGTH_LONG,true).show();
                         custom_progrsss_bar.dismiss_progress();
                     }
                 });

@@ -14,5 +14,12 @@
         app:showAsAction="never" />
 
 
+    <item
+        android:id="@+id/add_admin"
+        android:orderInCategory="100"
+        android:title="Admin Registration"
+        app:showAsAction="never"/>
+
+
 
 </menu>
