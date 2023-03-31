@@ -5,19 +5,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.guruprasad.notesuplaoder.Semester.semester_1;
-import com.guruprasad.notesuplaoder.Semester.semester_2;
-import com.guruprasad.notesuplaoder.Semester.semester_3;
-import com.guruprasad.notesuplaoder.Semester.semester_4;
-import com.guruprasad.notesuplaoder.Semester.semester_5;
-import com.guruprasad.notesuplaoder.Semester.semester_6;
+import com.guruprasad.notesuplaoder.R;
 import com.guruprasad.notesuplaoder.databinding.FragmentLabManualBinding;
 
-public class lab_manual_fragment extends Fragment {
+public class lab_manual_fragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private FragmentLabManualBinding binding;
 
@@ -29,50 +26,28 @@ public class lab_manual_fragment extends Fragment {
 
 
 
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.semester_type, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(androidx.transition.R.layout.support_simple_spinner_dropdown_item);
+        binding.spSem.setAdapter(adapter);
+        binding.spSem.setOnItemSelectedListener(this);
+
+        ArrayAdapter<CharSequence> dep = ArrayAdapter.createFromResource(getContext(), R.array.department_type, android.R.layout.simple_spinner_item);
+        dep.setDropDownViewResource(androidx.transition.R.layout.support_simple_spinner_dropdown_item);
+        binding.spDep.setAdapter(dep);
+        binding.spDep.setOnItemSelectedListener(this);
+
+        String semester = binding.spSem.getSelectedItem().toString();
+        String department = binding.spDep.getSelectedItem().toString();
 
 
-        binding.submit.setOnClickListener(new View.OnClickListener() {
+        binding.btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if (binding.sem1Radio.isChecked() )
-                {
-                    startActivity(new Intent(view.getContext(), semester_1.class));
-
-                }
-
-
-
-                else if (binding.sem2Radio.isChecked() )
-                {
-                    startActivity(new Intent(view.getContext(), semester_2.class));
-                }
-
-
-                else if (binding.sem3Radio.isChecked() )
-                {
-                    startActivity(new Intent(view.getContext(), semester_3.class));
-                }
-
-
-                else if (binding.sem4Radio.isChecked() )
-                {
-                    startActivity(new Intent(view.getContext(), semester_4.class));
-                }
-
-
-
-
-                else if (binding.sem5Radio.isChecked() )
-                {
-                    startActivity(new Intent(view.getContext(), semester_5.class));
-                } 
-                else if (binding.sem6Radio.isChecked() )
-                {
-                    startActivity(new Intent(view.getContext(), semester_6.class));
-                }
-
-
+                Intent intent = new Intent(getContext(),ShowLabManualActivity.class);
+                intent.putExtra("sem",semester);
+                intent.putExtra("dep",department);
+                startActivity(intent);
 
             }
         });
@@ -90,5 +65,15 @@ public class lab_manual_fragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }

@@ -1,5 +1,6 @@
-package com.guruprasad.notesuplaoder.Semester;
+package com.guruprasad.notesuplaoder.ui.Lab_manual_upload;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,38 +18,42 @@ import com.guruprasad.notesuplaoder.file_model;
 
 import java.util.Objects;
 
-public class semester_6 extends AppCompatActivity {
+public class ShowLabManualActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     lab_manual_adapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_sem_6);
-        Objects.requireNonNull(getSupportActionBar()).setTitle("Semester 6 Lab Manual");
+        setContentView(R.layout.activity_show_lab_manual);
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Lab Manuals");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        recyclerView = findViewById(R.id.rvShowManual);
 
-        recyclerView = findViewById(R.id.sem_6_rec);
+        Intent intent = getIntent();
+        String sem = intent.getStringExtra("sem");
+        String dep = intent.getStringExtra("dep");
 
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        FirebaseRecyclerOptions<file_model> options = new FirebaseRecyclerOptions.Builder<file_model>().setQuery(FirebaseDatabase.getInstance()
-                .getReference("admin_lab_manual").child("semester 6"),file_model.class).build();
+        FirebaseRecyclerOptions<file_model> options = new FirebaseRecyclerOptions.Builder<file_model>().setQuery(FirebaseDatabase.getInstance().getReference("admin_lab_manual").child(dep).child(sem),file_model.class).build();
 
         adapter = new lab_manual_adapter(options);
         adapter.startListening();
         recyclerView.setAdapter(adapter);
 
+
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.search , menu);
 
         MenuItem menuItem = menu.findItem(R.id.search);
-        androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) menuItem.getActionView();
+        SearchView searchView = (SearchView) menuItem.getActionView();
         searchView.setQueryHint("Type Here To Search");
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -64,14 +69,20 @@ public class semester_6 extends AppCompatActivity {
                 return false;
             }
         });
+
         return super.onCreateOptionsMenu(menu);
     }
 
     private void process_search(String query) {
+
+        Intent intent = getIntent();
+        String sem = intent.getStringExtra("sem");
+        String dep = intent.getStringExtra("dep");
+
         FirebaseRecyclerOptions<file_model> options =
                 new FirebaseRecyclerOptions.Builder<file_model>().setQuery(FirebaseDatabase.getInstance()
-                        .getReference("admin_lab_manual").child("semester 6").orderByChild("file_title")
-                        .startAt(query).endAt(query+"\uf8ff"),file_model.class).build();
+                        .getReference("admin_lab_manual").child(dep).child(sem).orderByChild("file_title")
+                        .startAt(query).endAt(query+"\uf8ff"), file_model.class).build();
 
         adapter = new lab_manual_adapter(options);
         adapter.startListening();
@@ -79,10 +90,8 @@ public class semester_6 extends AppCompatActivity {
 
     }
 
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
     }
 }

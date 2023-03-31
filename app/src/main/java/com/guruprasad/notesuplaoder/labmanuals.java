@@ -1,5 +1,8 @@
 package com.guruprasad.notesuplaoder;
 
+import static com.guruprasad.notesuplaoder.Constants.error_toast;
+import static com.guruprasad.notesuplaoder.Constants.success_toast;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -10,7 +13,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,7 +48,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class labmanuals extends AppCompatActivity {
+public class labmanuals extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     Uri file_path;
     ActivityLabmanualsBinding binding ;
     FirebaseDatabase database ;
@@ -55,6 +61,8 @@ public class labmanuals extends AppCompatActivity {
     List<String> files , status ;
     RecyclerView recview ;
    uploadAdpter uploadAdpter ;
+
+   Spinner semester , department ;
 
 
     String name = "";
@@ -77,6 +85,8 @@ public class labmanuals extends AppCompatActivity {
         recview .setLayoutManager(new LinearLayoutManager(this));
         uploadAdpter = new uploadAdpter(files,status);
         recview.setAdapter(uploadAdpter);
+        semester = findViewById(R.id.semester_spinner);
+        department = findViewById(R.id.department_spinner);
 
         database = FirebaseDatabase.getInstance();
         storage = FirebaseStorage.getInstance();
@@ -97,6 +107,18 @@ public class labmanuals extends AppCompatActivity {
                 finish();
             }
         });
+
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.semester_type, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(androidx.transition.R.layout.support_simple_spinner_dropdown_item);
+        semester.setAdapter(adapter);
+        semester.setOnItemSelectedListener(this);
+
+        ArrayAdapter<CharSequence> dep = ArrayAdapter.createFromResource(this, R.array.department_type, android.R.layout.simple_spinner_item);
+        dep.setDropDownViewResource(androidx.transition.R.layout.support_simple_spinner_dropdown_item);
+        department.setAdapter(dep);
+        department.setOnItemSelectedListener(this);
+
 
 
 
@@ -180,6 +202,10 @@ public class labmanuals extends AppCompatActivity {
                     pd.setCanceledOnTouchOutside(false);
                     pd.show();
 
+                    String sem = semester.getSelectedItem().toString();
+                    String dep = department.getSelectedItem().toString();
+
+
                     StorageReference reference = storageReference.child("admin_lab_manual/"+filename+".pdf");
                     reference.putFile(file_path).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -190,64 +216,24 @@ public class labmanuals extends AppCompatActivity {
 
                                     file_model filemodel = new file_model(filename, uri.toString(), auth.getCurrentUser().getUid());
 
-                                    if (binding.sem1Radio.isChecked()   ) {
-                                        databaseReference.child("semester 1").child(databaseReference.push().getKey()).setValue(filemodel);
-                                        status.remove(index);
-                                        status.add(index,"done");
-                                        uploadAdpter.notifyDataSetChanged();
-                                        pd.dismiss();
-                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
+                                    databaseReference.child(dep).child(sem).child(databaseReference.push().getKey()).setValue(filemodel)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
+                                                    status.remove(index);
+                                                    status.add(index,"done");
+                                                    uploadAdpter.notifyDataSetChanged();
+                                                    pd.dismiss();
+                                                    success_toast(getApplicationContext(),filename+" Uploaded Successfully");
 
-                                    }
-                                    else if (binding.sem2Radio.isChecked()   ) {
-                                        databaseReference.child("semester 2").child(databaseReference.push().getKey()).setValue(filemodel);
-                                        status.remove(index);
-                                        status.add(index,"done");
-                                        uploadAdpter.notifyDataSetChanged();
-                                        pd.dismiss();
-                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
-
-                                    }
-
-                                    else if (binding.sem3Radio.isChecked()   ) {
-                                        databaseReference.child("semester 3").child(databaseReference.push().getKey()).setValue(filemodel);
-                                        status.remove(index);
-                                        status.add(index,"done");
-                                        uploadAdpter.notifyDataSetChanged();
-                                        pd.dismiss();
-                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
-
-                                    }
-                                    else if (binding.sem4Radio.isChecked()   ) {
-                                        databaseReference.child("semester 4").child(databaseReference.push().getKey()).setValue(filemodel);
-                                        status.remove(index);
-                                        status.add(index,"done");
-                                        uploadAdpter.notifyDataSetChanged();
-                                        pd.dismiss();
-                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
-
-                                    }
-
-                                    else if (binding.sem5Radio.isChecked()   ) {
-                                        databaseReference.child("semester 5").child(databaseReference.push().getKey()).setValue(filemodel);
-                                        status.remove(index);
-                                        status.add(index,"done");
-                                        uploadAdpter.notifyDataSetChanged();
-                                        pd.dismiss();
-                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
-
-                                    }
-                                    else if (binding.sem6Radio.isChecked()   ) {
-                                        databaseReference.child("semester 6").child(databaseReference.push().getKey()).setValue(filemodel);
-                                        status.remove(index);
-                                        status.add(index,"done");
-                                        uploadAdpter.notifyDataSetChanged();
-                                        pd.dismiss();
-                                        Toast.makeText(labmanuals.this, "Lab manual is uploaded", Toast.LENGTH_SHORT).show();
-
-                                    }
-
-
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    error_toast(getApplicationContext(),"Failed to Add Manual : "+e.getMessage());
+                                                    pd.dismiss();
+                                                }
+                                            });
 
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
@@ -268,5 +254,15 @@ public class labmanuals extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }

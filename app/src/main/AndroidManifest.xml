@@ -20,9 +20,13 @@
         android:theme="@style/Theme.NotesUplaoder"
         tools:targetApi="31">
         <activity
+            android:name=".ui.Lab_manual_upload.ShowLabManualActivity"
+            android:exported="false"
+            android:parentActivityName=".labmanuals"/>
+        <activity
             android:name=".admin_regestration"
-            android:parentActivityName=".navigation"
-            android:exported="false">
+            android:exported="false"
+            android:parentActivityName=".navigation">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -37,60 +41,6 @@
         <activity
             android:name=".ui.Library.Books_Uploader"
             android:exported="false"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".Semester.semester_3"
-            android:exported="false"
-            android:parentActivityName=".labmanuals"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".Semester.semester_2"
-            android:exported="false"
-            android:parentActivityName=".labmanuals"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".Semester.semester_1"
-            android:exported="false"
-            android:parentActivityName=".labmanuals"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".Semester.semester_6"
-            android:exported="false"
-            android:parentActivityName=".labmanuals"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".Semester.semester_5"
-            android:exported="false"
-            android:parentActivityName=".labmanuals"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".Semester.semester_4"
-            android:exported="false"
-            android:parentActivityName=".labmanuals"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"

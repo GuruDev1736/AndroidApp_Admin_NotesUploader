@@ -25,8 +25,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             app:indicatorColor="#00E2FF"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/textView"
+            app:layout_constraintStart_toStartOf="@+id/textView"
             app:layout_constraintTop_toTopOf="parent"
             app:trackColor="#FFFFFF" />
 
