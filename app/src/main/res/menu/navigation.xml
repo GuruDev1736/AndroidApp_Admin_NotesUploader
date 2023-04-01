@@ -20,6 +20,10 @@
         android:title="Admin Registration"
         app:showAsAction="never"/>
 
-
+    <item
+        android:id="@+id/add_music"
+        android:orderInCategory="100"
+        android:title="Add Music"
+        app:showAsAction="never"/>
 
 </menu>

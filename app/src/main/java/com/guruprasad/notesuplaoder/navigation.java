@@ -32,6 +32,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.guruprasad.notesuplaoder.databinding.ActivityNavigationBinding;
+import com.guruprasad.notesuplaoder.ui.Activities.AddMusic;
 import com.guruprasad.notesuplaoder.ui.Library.Books_Uploader;
 
 import java.util.Objects;
@@ -177,7 +178,6 @@ public class navigation extends AppCompatActivity {
                 if (user!=null)
                 {
                     auth.signOut();
-                    Toasty.success(navigation.this,"Sign Out Successfully",Toast.LENGTH_LONG,true).show();
                     startActivity(new Intent(getApplicationContext(),MainActivity.class));
                     finish();
 
@@ -193,11 +193,16 @@ public class navigation extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(),admin_regestration.class));
                 break ;
 
+
+            case R.id.add_music:
+                Toasty.info(navigation.this,"Upload Music",Toast.LENGTH_LONG,true).show();
+                startActivity(new Intent(getApplicationContext(), AddMusic.class));
+                break;
+
         }
 
         return super.onOptionsItemSelected(item);
     }
-
 
 
 
