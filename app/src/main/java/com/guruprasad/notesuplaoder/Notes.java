@@ -10,8 +10,11 @@ import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,7 +44,7 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class Notes extends AppCompatActivity {
+public class Notes extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     Uri filepath ;
     Button browse ;
         ImageButton back ;
@@ -52,6 +55,7 @@ public class Notes extends AppCompatActivity {
     RecyclerView recview ;
     uploadAdpter uploadAdpter ;
 
+    Spinner semester , department ;
 
 
 
@@ -70,6 +74,8 @@ public class Notes extends AppCompatActivity {
         browse= findViewById(R.id.browse);
         back = findViewById(R.id.back_button);
         pagename = findViewById(R.id.page_name);
+        semester = findViewById(R.id.semester_spinner);
+        department = findViewById(R.id.department_spinner);
 
         recview = findViewById(R.id.recview);
         recview .setLayoutManager(new LinearLayoutManager(this));
@@ -121,6 +127,17 @@ public class Notes extends AppCompatActivity {
         });
 
 
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.semester_type, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(androidx.transition.R.layout.support_simple_spinner_dropdown_item);
+        semester.setAdapter(adapter);
+        semester.setOnItemSelectedListener(this);
+
+        ArrayAdapter<CharSequence> dep = ArrayAdapter.createFromResource(this, R.array.department_type, android.R.layout.simple_spinner_item);
+        dep.setDropDownViewResource(androidx.transition.R.layout.support_simple_spinner_dropdown_item);
+        department.setAdapter(dep);
+        department.setOnItemSelectedListener(this);
+
+
 
 
 
@@ -145,6 +162,10 @@ public class Notes extends AppCompatActivity {
 
                   final int index = i ;
 
+                  String sem = semester.getSelectedItem().toString();
+                  String dep = department.getSelectedItem().toString();
+
+
                     ProgressDialog pd = new ProgressDialog(Notes.this);
                     pd.setTitle("Lab Manual is Uploading");
                     pd.setMessage("PLease Wait ....");
@@ -162,7 +183,7 @@ public class Notes extends AppCompatActivity {
                                         @Override
                                         public void onSuccess(Uri uri) {
                                             filemodel filemodel = new filemodel(filename,uri.toString());
-                                            databaseReference.child(Objects.requireNonNull(databaseReference.push().getKey())).setValue(filemodel);
+                                            databaseReference.child(dep).child(sem).child(Objects.requireNonNull(databaseReference.push().getKey())).setValue(filemodel);
 
                                             status.remove(index);
                                             status.add(index,"done");
@@ -210,4 +231,13 @@ public class Notes extends AppCompatActivity {
         return result;
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
 }

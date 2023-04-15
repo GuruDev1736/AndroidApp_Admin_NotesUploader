@@ -32,7 +32,7 @@
             <ScrollView
                 android:id="@+id/scrollView2"
                 android:layout_width="406dp"
-                android:layout_height="365dp"
+                android:layout_height="300dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
@@ -51,12 +51,51 @@
             </ScrollView>
 
 
+            <TextView
+                android:id="@+id/textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/scrollView2"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:gravity="center"
+                android:text="Select the Semester and Department"
+                android:textColor="@color/white"
+                android:textSize="25dp" />
+
+
+            <Spinner
+                android:id="@+id/semester_spinner"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_below="@+id/textview"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:background="#00BCD4" />
+
+
+            <Spinner
+                android:id="@+id/department_spinner"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_alignTop="@+id/semester_spinner"
+                android:layout_alignBottom="@+id/semester_spinner"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="0dp"
+                android:background="#00BCD4" />
+
+
 
             <Button
                 android:id="@+id/browse"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/scrollView2"
+                android:layout_below="@+id/semester_spinner"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="100dp"

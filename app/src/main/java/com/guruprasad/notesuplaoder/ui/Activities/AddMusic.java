@@ -18,7 +18,9 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,9 +30,12 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.guruprasad.notesuplaoder.adapter.PomodoroMusicAdapter;
 import com.guruprasad.notesuplaoder.databinding.ActivityAddMusicBinding;
+import com.guruprasad.notesuplaoder.filemodel;
 import com.guruprasad.notesuplaoder.labmanuals;
 import com.guruprasad.notesuplaoder.model.MusicModel;
+import com.guruprasad.notesuplaoder.myadapter;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -47,6 +52,7 @@ public class AddMusic extends AppCompatActivity {
     FirebaseStorage storage ;
     StorageReference storageReference ;
     FirebaseAuth auth;
+    PomodoroMusicAdapter adapter ;
     DatabaseReference databaseReference;
     ActivityAddMusicBinding binding ;
     @Override
@@ -138,8 +144,6 @@ public class AddMusic extends AppCompatActivity {
                                                 error_toast(getApplicationContext(),"Failed To Upload : "+e.getMessage());
                                             }
                                         });
-
-
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
@@ -160,6 +164,16 @@ public class AddMusic extends AppCompatActivity {
                 });
             }
         });
+
+
+
+        binding.rvShowMusic.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        FirebaseRecyclerOptions<MusicModel> options = new FirebaseRecyclerOptions.Builder<MusicModel>().setQuery(FirebaseDatabase.getInstance().getReference().child("Pomodoro Music"),MusicModel.class).build();
+
+        adapter = new PomodoroMusicAdapter(options);
+        adapter.startListening();
+        binding.rvShowMusic.setAdapter(adapter);
+
 
 
     }

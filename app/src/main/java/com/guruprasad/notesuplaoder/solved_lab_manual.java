@@ -1,5 +1,8 @@
 package com.guruprasad.notesuplaoder;
 
+import static com.guruprasad.notesuplaoder.Constants.error_toast;
+import static com.guruprasad.notesuplaoder.Constants.success_toast;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -10,6 +13,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,7 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class solved_lab_manual extends AppCompatActivity {
+public class solved_lab_manual extends AppCompatActivity  implements AdapterView.OnItemSelectedListener {
     Uri file_path;
     ActivitySolvedLabManualBinding binding ;
     FirebaseDatabase database ;
@@ -129,6 +134,17 @@ public class solved_lab_manual extends AppCompatActivity {
         });
 
 
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.semester_type, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(androidx.transition.R.layout.support_simple_spinner_dropdown_item);
+        binding.semesterSpinner.setAdapter(adapter);
+        binding.semesterSpinner.setOnItemSelectedListener(this);
+
+        ArrayAdapter<CharSequence> dep = ArrayAdapter.createFromResource(this, R.array.department_type, android.R.layout.simple_spinner_item);
+        dep.setDropDownViewResource(androidx.transition.R.layout.support_simple_spinner_dropdown_item);
+        binding.departmentSpinner.setAdapter(dep);
+        binding.departmentSpinner.setOnItemSelectedListener(this);
+
+
 
 
 
@@ -175,6 +191,10 @@ public class solved_lab_manual extends AppCompatActivity {
 
                     final int index = i ;
 
+                    String sem = binding.semesterSpinner.getSelectedItem().toString();
+                    String dep = binding.departmentSpinner.getSelectedItem().toString();
+
+
                     ProgressDialog pd = new ProgressDialog(solved_lab_manual.this);
                     pd.setTitle("Solved Lab Manual is Uploading");
                     pd.setMessage("PLease Wait ....");
@@ -191,13 +211,12 @@ public class solved_lab_manual extends AppCompatActivity {
                                 public void onSuccess(Uri uri) {
 
                                     file_model filemodel = new file_model(filename, uri.toString(), auth.getCurrentUser().getUid());
-                                    databaseReference.child(databaseReference.push().getKey()).setValue(filemodel);
-                                    status.remove(index);
-                                    status.add(index,"done");
-                                    uploadAdpter.notifyDataSetChanged();
-                                    pd.dismiss();
-                                    Toast.makeText(solved_lab_manual.this, "Solved Lab manual is uploaded", Toast.LENGTH_SHORT).show();
-
+                                    databaseReference.child(dep).child(sem).child(databaseReference.push().getKey()).setValue(filemodel);
+                                            status.remove(index);
+                                            status.add(index,"done");
+                                            uploadAdpter.notifyDataSetChanged();
+                                            pd.dismiss();
+                                            success_toast(getApplicationContext(),filename+" Uploaded Successfully");
 
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
@@ -211,12 +230,22 @@ public class solved_lab_manual extends AppCompatActivity {
                     }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                            float per = 100*snapshot.getBytesTransferred() /snapshot.getTotalByteCount();
+                            float per = 100*snapshot.getBytesTransferred() / snapshot.getTotalByteCount();
                             pd.setMessage("File uploaded : "+(int)per+"%");
                         }
                     });
                 }
             }
         }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }
