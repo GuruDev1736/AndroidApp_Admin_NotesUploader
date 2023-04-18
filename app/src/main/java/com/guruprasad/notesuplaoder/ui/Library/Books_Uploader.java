@@ -269,8 +269,12 @@ public class Books_Uploader extends AppCompatActivity implements AdapterView.OnI
                         }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                                float per = 100 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount();
-                                pd.setMessage("File uploaded : " + (int) per + "%");
+                                float totalBytes = snapshot.getTotalByteCount();
+                                float per = 0.0f;
+                                if (totalBytes != 0) {
+                                    per = 100 * snapshot.getBytesTransferred() / totalBytes;
+                                }
+                                pd.setMessage("File uploaded : " + (int)per + "%");
                             }
                         });
 

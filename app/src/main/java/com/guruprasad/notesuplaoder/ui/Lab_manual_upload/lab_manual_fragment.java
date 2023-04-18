@@ -36,6 +36,19 @@ public class lab_manual_fragment extends Fragment implements AdapterView.OnItemS
         binding.spDep.setAdapter(dep);
         binding.spDep.setOnItemSelectedListener(this);
 
+
+        return root;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
         String semester = binding.spSem.getSelectedItem().toString();
         String department = binding.spDep.getSelectedItem().toString();
 
@@ -52,23 +65,6 @@ public class lab_manual_fragment extends Fragment implements AdapterView.OnItemS
             }
         });
 
-
-
-
-
-
-
-        return root;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
     }
 

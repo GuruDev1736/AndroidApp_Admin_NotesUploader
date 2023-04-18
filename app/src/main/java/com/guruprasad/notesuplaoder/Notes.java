@@ -1,5 +1,8 @@
 package com.guruprasad.notesuplaoder;
 
+import static com.guruprasad.notesuplaoder.Constants.error_toast;
+import static com.guruprasad.notesuplaoder.Constants.success_toast;
+
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -29,6 +32,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.guruprasad.notesuplaoder.adapter.uploadAdpter;
@@ -184,21 +188,33 @@ public class Notes extends AppCompatActivity implements AdapterView.OnItemSelect
                                         public void onSuccess(Uri uri) {
                                             filemodel filemodel = new filemodel(filename,uri.toString());
                                             databaseReference.child(dep).child(sem).child(Objects.requireNonNull(databaseReference.push().getKey())).setValue(filemodel);
-
                                             status.remove(index);
                                             status.add(index,"done");
                                             uploadAdpter.notifyDataSetChanged();
+                                            success_toast(getApplicationContext(),filename+" Uploaded Successfully");
                                             pd.dismiss();
 
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            error_toast(getApplicationContext(),"Error : "+e.getMessage());
+                                            pd.dismiss();
                                         }
                                     });
 
                                 }
-                            }).addOnFailureListener(new OnFailureListener() {
+                            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                                 @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(Notes.this, "Error :" +e.getMessage(), Toast.LENGTH_SHORT).show();
-                                    pd.dismiss();
+                                public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+
+                                    float totalBytes = snapshot.getTotalByteCount();
+                                    float per = 0.0f;
+                                    if (totalBytes != 0) {
+                                        per = 100 * snapshot.getBytesTransferred() / totalBytes;
+                                    }
+                                    pd.setMessage("File uploaded : " + (int)per + "%");
+
                                 }
                             });
 

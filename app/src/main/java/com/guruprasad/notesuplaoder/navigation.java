@@ -32,10 +32,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.guruprasad.notesuplaoder.databinding.ActivityNavigationBinding;
-import com.guruprasad.notesuplaoder.ui.Activities.AddMusic;
 import com.guruprasad.notesuplaoder.ui.Library.Books_Uploader;
-
-import java.util.Objects;
 
 import es.dmoral.toasty.Toasty;
 
@@ -82,9 +79,16 @@ public class navigation extends AppCompatActivity {
                  ImageView img  = findViewById(R.id.profile_img_nav);
                 usermodel usermodel = snapshot.getValue(com.guruprasad.notesuplaoder.usermodel.class);
 
-                user.setText(Objects.requireNonNull(usermodel).getFull_name());
-                email.setText(usermodel.getEmail());
-                Glide.with(navigation.this).load(usermodel.profile_pic).into(img);
+
+                if (user != null && usermodel != null) {
+                    user.setText(usermodel.getFull_name());
+                }
+                if (email != null && usermodel != null) {
+                    email.setText(usermodel.getEmail());
+                }
+                if (img != null && usermodel != null) {
+                    Glide.with(navigation.this).load(usermodel.profile_pic).into(img);
+                }
 
             }
 
@@ -178,6 +182,7 @@ public class navigation extends AppCompatActivity {
                 if (user!=null)
                 {
                     auth.signOut();
+                    Toasty.success(navigation.this,"Sign Out Successfully",Toast.LENGTH_LONG,true).show();
                     startActivity(new Intent(getApplicationContext(),MainActivity.class));
                     finish();
 
@@ -193,16 +198,11 @@ public class navigation extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(),admin_regestration.class));
                 break ;
 
-
-            case R.id.add_music:
-                Toasty.info(navigation.this,"Upload Music",Toast.LENGTH_LONG,true).show();
-                startActivity(new Intent(getApplicationContext(), AddMusic.class));
-                break;
-
         }
 
         return super.onOptionsItemSelected(item);
     }
+
 
 
 

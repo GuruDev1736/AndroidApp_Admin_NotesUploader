@@ -212,12 +212,12 @@ public class solved_lab_manual extends AppCompatActivity  implements AdapterView
 
                                     file_model filemodel = new file_model(filename, uri.toString(), auth.getCurrentUser().getUid());
                                     databaseReference.child(dep).child(sem).child(databaseReference.push().getKey()).setValue(filemodel);
+
                                             status.remove(index);
                                             status.add(index,"done");
                                             uploadAdpter.notifyDataSetChanged();
-                                            pd.dismiss();
                                             success_toast(getApplicationContext(),filename+" Uploaded Successfully");
-
+                                            pd.dismiss();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -230,8 +230,12 @@ public class solved_lab_manual extends AppCompatActivity  implements AdapterView
                     }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                            float per = 100*snapshot.getBytesTransferred() / snapshot.getTotalByteCount();
-                            pd.setMessage("File uploaded : "+(int)per+"%");
+                            float totalBytes = snapshot.getTotalByteCount();
+                            float per = 0.0f;
+                            if (totalBytes != 0) {
+                                per = 100 * snapshot.getBytesTransferred() / totalBytes;
+                            }
+                            pd.setMessage("File uploaded : " + (int)per + "%");
                         }
                     });
                 }

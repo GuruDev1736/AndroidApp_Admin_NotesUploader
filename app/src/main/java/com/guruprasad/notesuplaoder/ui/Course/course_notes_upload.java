@@ -167,10 +167,6 @@ public class course_notes_upload extends AppCompatActivity implements AdapterVie
                 }
                 Toast.makeText(this, "You Have Selected " + FileList.size() +" Files ", Toast.LENGTH_LONG).show();
 
-
-
-
-
             }
         }
     }
@@ -229,6 +225,7 @@ public class course_notes_upload extends AppCompatActivity implements AdapterVie
                                         status.remove(index);
                                         file_model filemodel = new file_model(filename, uri.toString(), auth.getCurrentUser().getUid());
                                         databaseReference.child(name).child("Notes").child(databaseReference.push().getKey()).setValue(filemodel);
+
                                         status.add("done");
                                         uploadAdpter.notifyDataSetChanged();
                                         pd.dismiss();
@@ -248,8 +245,12 @@ public class course_notes_upload extends AppCompatActivity implements AdapterVie
                         }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                                float per = 100 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount();
-                                pd.setMessage("File uploaded : " + (int) per + "%");
+                                float totalBytes = snapshot.getTotalByteCount();
+                                float per = 0.0f;
+                                if (totalBytes != 0) {
+                                    per = 100 * snapshot.getBytesTransferred() / totalBytes;
+                                }
+                                pd.setMessage("File uploaded : " + (int)per + "%");
                             }
                         });
 

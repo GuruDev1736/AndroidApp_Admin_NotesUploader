@@ -8,9 +8,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.google.android.c2dm.permission.Receive" />
     <uses-permission android:name="com.google.android.c2dm.permission.Send" />
-    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/>
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
-    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO"/>
 
     <application
         android:allowBackup="true"
@@ -23,9 +20,9 @@
         android:theme="@style/Theme.NotesUplaoder"
         tools:targetApi="31">
         <activity
-            android:name=".ui.Activities.AddMusic"
-            android:parentActivityName=".navigation"
-            android:exported="false" />
+            android:name=".ui.solved_lab_manual_upload.ShowSolvedLabManual"
+            android:exported="false"
+            android:parentActivityName=".solved_lab_manual"/>
         <activity
             android:name=".ui.Lab_manual_upload.ShowLabManualActivity"
             android:exported="false"
