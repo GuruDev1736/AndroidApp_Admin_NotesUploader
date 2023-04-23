@@ -17,9 +17,15 @@
     <string name="Requested_books">Requested Books</string>
     <string name="UploadCourse">Upload Course</string>
     <string name="UploadStream">Upload Stream</string>
+    <string name="PracticeSet">Practice Set</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string-array name="year">
+        <item>First Year</item>
+        <item>Second Year</item>
+        <item>Third Year</item>
+    </string-array>
 
     <string-array name="Languages">
 
@@ -94,6 +100,192 @@
         <item>Semester 5</item>
         <item>Semester 6</item>
 
+    </string-array>
+
+
+    <string-array name="first_comp">
+        <item>English</item>
+        <item>Basic Science</item>
+        <item>Basic Mathematics</item>
+        <item>Fundamentals of ICT</item>
+        <item>Engineering Graphic</item>
+        <item>Elements of Electrical Engineering</item>
+        <item>Applied Mathematics</item>
+        <item>Basic Electronic</item>
+        <item>Programming in C</item>
+        <item>Business Communication Using Computer</item>
+        <item>Computers Peripheral and Hardware Maintenance</item>
+        <item>Web page designing with HTML</item>
+    </string-array>
+
+
+    <string-array name="second_comp">
+        <item>Object Oriented Programming using C++</item>
+        <item>Data structure using c</item>
+        <item>Computer Graphic</item>
+        <item>Database Management System</item>
+        <item>Digital Technique</item>
+        <item>Java Programming</item>
+        <item>Software Engineering</item>
+        <item>Data Communication and Computer Network</item>
+        <item>Microprocessor</item>
+        <item>Gui application using V. B Net</item>
+    </string-array>
+
+
+    <string-array name="third_comp">
+        <item>Environmental Studies</item>
+        <item>Operating System</item>
+        <item>Advanced Java programming</item>
+        <item>Software testing</item>
+        <item>Advanced Computer Network</item>
+        <item>Industrial training</item>
+        <item>Capstone project planning</item>
+        <item>Mobile Application Development</item>
+        <item>Network information and computer security</item>
+        <item>Programming with Python</item>
+        <item>Management</item>
+        <item>Entrepreneurship Development</item>
+        <item>Emerging Trends in computer and information technologies</item>
+        <item>Capstone project execution and report writing</item>
+    </string-array>
+
+    <string-array name="first_mech">
+        <item>Engineering Mathematics</item>
+        <item>Engineering Physics</item>
+        <item>Engineering Mechanics</item>
+        <item>Engineering Drawing</item>
+        <item>Engineering Graphics</item>
+        <item>Manufacturing Processes</item>
+        <item>Materials Science and Engineering</item>
+    </string-array>
+
+    <string-array name="second_mech">
+        <item>Dynamics of Machinery</item>
+        <item>Thermodynamics</item>
+        <item>Fluid Mechanics</item>
+        <item>Heat Transfer</item>
+        <item>Strength of Materials</item>
+        <item>Machine Design</item>
+        <item>Computer-Aided Design and Manufacturing</item>
+    </string-array>
+
+    <string-array name="third_mech">
+        <item>Control Engineering</item>
+        <item>Power Plant Engineering</item>
+        <item>Refrigeration and Air Conditioning</item>
+        <item>Industrial Engineering</item>
+        <item>Automobile Engineering</item>
+        <item>Renewable Energy Systems</item>
+        <item>Project Management</item>
+    </string-array>
+
+    <string-array name="first_IT">
+        <item>Fundamentals of Information Technology</item>
+        <item>Programming in C</item>
+        <item>Computer Organization and Architecture</item>
+        <item>Digital Electronics</item>
+        <item>Web Designing</item>
+        <item>Mathematics - I</item>
+    </string-array>
+
+    <string-array name="second_IT">
+        <item>Object-Oriented Programming with Java</item>
+        <item>Database Management System</item>
+        <item>Data Structure using C</item>
+        <item>Operating Systems</item>
+        <item>Computer Networks</item>
+        <item>Mathematics - II</item>
+    </string-array>
+
+    <string-array name="third_IT">
+        <item>Software Engineering</item>
+        <item>Advanced Java Programming</item>
+        <item>Web Application Development</item>
+        <item>Computer Graphics and Multimedia</item>
+        <item>Cyber Security</item>
+        <item>Project Management</item>
+    </string-array>
+
+    <string-array name="first_pharmacy">
+        <item>Anatomy and Physiology</item>
+        <item>Pharmaceutical Chemistry</item>
+        <item>Pharmaceutics</item>
+        <item>Pharmacognosy</item>
+        <item>Microbiology</item>
+        <item>Mathematics</item>
+    </string-array>
+
+    <string-array name="second_pharmacy">
+        <item>Medicinal Chemistry</item>
+        <item>Pharmacology</item>
+        <item>Pharmaceutical Analysis</item>
+        <item>Pharmaceutical Engineering</item>
+        <item>Biopharmaceutics and Pharmacokinetics</item>
+        <item>Environmental Science</item>
+    </string-array>
+
+    <string-array name="third_pharmacy">
+        <item>Clinical Pharmacy and Therapeutics</item>
+        <item>Pharmacovigilance and Regulatory Affairs</item>
+        <item>Quality Control and Assurance</item>
+        <item>Industrial Pharmacy</item>
+        <item>Herbal Drug Technology</item>
+        <item>Research Methodology and Biostatistics</item>
+    </string-array>
+
+    <string-array name="first_civil">
+        <item>Engineering Mathematics</item>
+        <item>Engineering Graphics</item>
+        <item>Engineering Mechanics</item>
+        <item>Basic Electrical Engineering</item>
+        <item>Environmental Studies</item>
+        <item>Building Technology and Materials</item>
+    </string-array>
+
+    <string-array name="second_civil">
+        <item>Surveying</item>
+        <item>Strength of Materials</item>
+        <item>Building Construction and Maintenance</item>
+        <item>Concrete Technology</item>
+        <item>Engineering Geology</item>
+        <item>Fluid Mechanics</item>
+    </string-array>
+
+    <string-array name="third_civil">
+        <item>Advanced Surveying</item>
+        <item>Design of RCC Structures</item>
+        <item>Design of Steel Structures</item>
+        <item>Highway Engineering</item>
+        <item>Construction Management and Accounts</item>
+        <item>Water Supply and Sanitary Engineering</item>
+    </string-array>
+
+    <string-array name="first_E_and_TC">
+        <item>Engineering Mathematics</item>
+        <item>Engineering Graphics</item>
+        <item>Electronic Devices and Circuits</item>
+        <item>Basic Electrical Engineering</item>
+        <item>Computer Programming and Problem Solving</item>
+        <item>Engineering Mechanics</item>
+    </string-array>
+
+    <string-array name="second_E_and_TC">
+        <item>Signals and Systems</item>
+        <item>Digital Electronics</item>
+        <item>Network Analysis and Synthesis</item>
+        <item>Analog Communication</item>
+        <item>Microprocessor and Microcontroller</item>
+        <item>Data Structures and Algorithms</item>
+    </string-array>
+
+    <string-array name="third_E_and_TC">
+        <item>Digital Communication</item>
+        <item>Control Systems</item>
+        <item>Antenna and Wave Propagation</item>
+        <item>Microwave Engineering</item>
+        <item>Optical Communication</item>
+        <item>Project Work and Seminar</item>
     </string-array>
 
 

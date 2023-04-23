@@ -47,4 +47,10 @@
         android:label="@string/UploadStream"
         tools:layout="@layout/fragment_upload__stream" />
 
+    <fragment
+        android:id="@+id/nav_practice_set"
+        android:name="com.guruprasad.notesuplaoder.ui.PracticeSet.PracticeSetUploader"
+        android:label="@string/PracticeSet"
+        tools:layout="@layout/fragment_practice_set_uploader" />
+
 </navigation>

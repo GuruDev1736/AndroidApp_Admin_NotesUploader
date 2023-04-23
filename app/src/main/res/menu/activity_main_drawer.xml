@@ -35,6 +35,10 @@
             android:icon="@drawable/stream"
             android:title="@string/UploadStream" />
 
+        <item android:id="@+id/nav_practice_set"
+            android:icon="@drawable/practice"
+            android:title="@string/PracticeSet" />
+
     </group>
 
 </menu>
